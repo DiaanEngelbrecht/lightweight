@@ -1,0 +1,19 @@
+syntax = "proto3";
+package accounts;
+option go_package = "/apis/lightweight/services";
+
+service Accounts {
+  rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse);
+}
+
+message CreateAccountRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message CreateAccountResponse {
+  bool success = 1;
+  string result_code = 2;
+  string message = 3;
+}

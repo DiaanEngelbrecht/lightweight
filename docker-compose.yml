@@ -1,0 +1,33 @@
+# Lightweight Development environment
+version: '3.8'
+services:
+  # postgres.dev:
+  #   environment:
+  #     POSTGRES_DB: lightweight_dev
+  #     POSTGRES_PASSWORD: passwordispassword
+  #     POSTGRES_USER: lightweight_user
+  #   image: postgres:12
+  #   logging:
+  #       driver: none
+  #   ports:
+  #     - "54320:5432"
+  #   volumes:
+  #     - lightweight.postgres:/var/lib/postgresql/data
+
+  mysql.dev:
+    environment:
+      MYSQL_DATABASE: lightweight_dev
+      MYSQL_ROOT_PASSWORD: root
+    image: mysql:8
+    logging:
+        driver: none
+    ports:
+      - "33060:3306"
+    volumes:
+      - lightweight.mysql:/var/lib/mysql
+
+
+
+volumes:
+  lightweight.postgres:
+  lightweight.mysql:
