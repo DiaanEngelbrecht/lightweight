@@ -873,6 +873,7 @@ dependencies = [
  "convert_case",
  "flair_core",
  "flair_derive",
+ "lightweight_store",
  "log",
  "prost",
  "prost-types",

@@ -12,6 +12,7 @@ path = "src/entry/main.rs"
 [dependencies]
 flair_core = { version = "*", path = "../../flair/core" }
 flair_derive = { version = "*", path = "../../flair/derive" }
+lightweight_store = { version = "*", path = "../store" }
 
 tokio = { version = "1.6", features = ["rt-multi-thread", "time", "macros", "signal", "process"] }
 tonic = { version = "0.7.2", features = ["tls", "codegen"] }
