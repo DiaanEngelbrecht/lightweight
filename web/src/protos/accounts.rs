@@ -11,8 +11,8 @@ pub struct CreateAccountRequest {
 pub struct CreateAccountResponse {
     #[prost(bool, tag="1")]
     pub success: bool,
-    #[prost(string, tag="2")]
-    pub result_code: ::prost::alloc::string::String,
+    #[prost(int32, tag="2")]
+    pub result_code: i32,
     #[prost(string, tag="3")]
     pub message: ::prost::alloc::string::String,
 }

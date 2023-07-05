@@ -1,7 +1,7 @@
 use async_trait::async_trait;
-use flair_core::store::snare::Ensnared;
+use flair_core::store::snare::{Ensnared, DBConnection};
 
-use super::contract::{AccountsRepositoryContract, DBConnection};
+use super::contract::AccountsRepositoryContract;
 use super::models::Account;
 
 pub struct AccountsRepository {}

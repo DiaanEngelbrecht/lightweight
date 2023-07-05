@@ -1,8 +1,7 @@
 use crate::repositories::accounts::models::Account;
 use async_trait::async_trait;
-use sqlx::{Database, Executor};
-
-pub trait DBConnection<'c>: Executor<'c, Database = sqlx::MySql> {}
+use flair_core::store::snare::DBConnection;
+use sqlx::Database;
 
 #[async_trait]
 pub trait AccountsRepositoryContract<DB: Database> {
