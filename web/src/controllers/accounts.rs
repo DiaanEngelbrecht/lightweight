@@ -26,12 +26,13 @@ impl Accounts for AccountsController {
         // let matches = argon2::verify_encoded(&hash, password).unwrap();
         let hashed_password = match argon2::hash_encoded(password, salt, &config) {
             Ok(h) => h,
-            Err(_) => {
+            Err(e) => {
+                log::error!("Could not generate password hash {}", e);
                 return Ok(tonic::Response::new(CreateAccountResponse {
                     success: false,
                     message: "Could not generate password hash".to_string(),
                     result_code: 500,
-                }))
+                }));
             }
         };
 
@@ -44,13 +45,19 @@ impl Accounts for AccountsController {
 
         if let Ok(mut conn) = svr_ctx.db_pool.acquire().await {
             let create_result = AccountsRepository::create_account(&mut conn, new_account).await;
-            if create_result.is_ok() {
-                return Ok(tonic::Response::new(CreateAccountResponse {
-                    success: true,
-                    result_code: 201,
-                    message: "Account created successfully".to_string(),
-                }));
+            match create_result {
+                Ok(_) => {
+                    return Ok(tonic::Response::new(CreateAccountResponse {
+                        success: true,
+                        result_code: 201,
+                        message: "Account created successfully".to_string(),
+                    }))
+                }
+                Err(e) => {
+                    log::error!("Could not insert new account into DB, err => {}", e)
+                },
             }
+
         }
 
         return Ok(tonic::Response::new(CreateAccountResponse {
