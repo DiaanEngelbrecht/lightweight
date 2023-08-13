@@ -7,5 +7,5 @@ pub struct Account {
     pub name: String,
     pub salt: Vec<u8>,
     pub email: String,
-    pub password: String,
+    pub password_hash: String,
 }

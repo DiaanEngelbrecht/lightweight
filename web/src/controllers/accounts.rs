@@ -47,7 +47,7 @@ impl Accounts for AccountsController {
             name: req_data.name.clone(),
             salt: salt.to_vec(),
             email: req_data.email.clone(),
-            password: hashed_password.to_string(),
+            password_hash: hashed_password.to_string(),
         };
 
         if let Ok(mut conn) = svr_ctx.db_pool.acquire().await {
