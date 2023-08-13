@@ -1,8 +1,11 @@
-use crate::protos::accounts::accounts_server::Accounts;
-use crate::protos::accounts::{CreateAccountRequest, CreateAccountResponse};
+use crate::protos::accounts::{
+    accounts_server::Accounts, CreateAccountRequest, CreateAccountResponse,
+};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
 use lightweight_store::repositories::accounts::implementation::AccountsRepository;
 use lightweight_store::repositories::accounts::models::Account;
+use rand::rngs::StdRng;
+use rand::{RngCore, SeedableRng};
 use tonic::async_trait;
 use tonic::{Request, Response, Status};
 
@@ -17,20 +20,23 @@ impl Accounts for AccountsController {
         log::info!("Inside account setup");
         let svr_ctx = flair_core::SERVER_CONTEXT.with(|ctx| ctx.clone());
 
+        // Prepare salt
+        let mut salt: [u8; 64] = [0; 64];
+        let mut rng = StdRng::from_entropy();
+        rng.fill_bytes(&mut salt);
+
         let req_data = request.into_inner();
-
-        let password = req_data.password.as_bytes();
-        let salt = req_data.name.as_bytes();
-        let config = argon2::Config::default();
-
         // let matches = argon2::verify_encoded(&hash, password).unwrap();
-        let hashed_password = match argon2::hash_encoded(password, salt, &config) {
+        let password = req_data.password.as_bytes();
+
+        let config = argon2::Config::default();
+        let hashed_password = match argon2::hash_encoded(password, &salt, &config) {
             Ok(h) => h,
             Err(e) => {
                 log::error!("Could not generate password hash {}", e);
                 return Ok(tonic::Response::new(CreateAccountResponse {
                     success: false,
-                    message: "Could not generate password hash".to_string(),
+                    message: format!("Could not generate password hash {}", e),
                     result_code: 500,
                 }));
             }
@@ -39,6 +45,7 @@ impl Accounts for AccountsController {
         let new_account = Account {
             id: 0,
             name: req_data.name.clone(),
+            salt: salt.to_vec(),
             email: req_data.email.clone(),
             password: hashed_password.to_string(),
         };
@@ -55,9 +62,8 @@ impl Accounts for AccountsController {
                 }
                 Err(e) => {
                     log::error!("Could not insert new account into DB, err => {}", e)
-                },
+                }
             }
-
         }
 
         return Ok(tonic::Response::new(CreateAccountResponse {

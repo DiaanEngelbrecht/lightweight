@@ -5,6 +5,7 @@ use sqlx::{query, FromRow};
 pub struct Account {
     pub id: i64,
     pub name: String,
+    pub salt: Vec<u8>,
     pub email: String,
     pub password: String,
 }

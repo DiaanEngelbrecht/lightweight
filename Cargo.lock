@@ -912,6 +912,7 @@ dependencies = [
  "log",
  "prost",
  "prost-types",
+ "rand",
  "rust-argon2",
  "serde",
  "serde_derive",
