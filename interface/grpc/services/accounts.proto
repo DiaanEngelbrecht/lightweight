@@ -4,6 +4,7 @@ option go_package = "/apis/lightweight/services";
 
 service Accounts {
   rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
 }
 
 message CreateAccountRequest {
@@ -13,6 +14,17 @@ message CreateAccountRequest {
 }
 
 message CreateAccountResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
   bool success = 1;
   int32 result_code = 2;
   string message = 3;

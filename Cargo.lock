@@ -512,8 +512,11 @@ dependencies = [
  "convert_case",
  "log",
  "log4rs",
+ "proc-macro2",
+ "quote",
  "regex",
  "sqlx",
+ "syn 2.0.18",
  "tokio",
 ]
 

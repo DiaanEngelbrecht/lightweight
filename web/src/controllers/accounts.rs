@@ -1,13 +1,13 @@
 use crate::protos::accounts::{
-    accounts_server::Accounts, CreateAccountRequest, CreateAccountResponse,
+    accounts_server::Accounts, CreateAccountRequest, CreateAccountResponse, LoginRequest,
+    LoginResponse,
 };
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
 use lightweight_store::repositories::accounts::implementation::AccountsRepository;
 use lightweight_store::repositories::accounts::models::Account;
 use rand::rngs::StdRng;
 use rand::{RngCore, SeedableRng};
-use tonic::async_trait;
-use tonic::{Request, Response, Status};
+use tonic::{async_trait, Request, Response, Status};
 
 flair_derive::controller!(AccountsController);
 #[async_trait]
@@ -71,5 +71,13 @@ impl Accounts for AccountsController {
             message: "Could not create account".to_string(),
             result_code: 500,
         }));
+    }
+
+    #[endpoint]
+    async fn login(
+        &self,
+        request: Request<LoginRequest>,
+    ) -> Result<Response<LoginResponse>, Status> {
+        todo!()
     }
 }

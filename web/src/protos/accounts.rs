@@ -16,6 +16,22 @@ pub struct CreateAccountResponse {
     #[prost(string, tag="3")]
     pub message: ::prost::alloc::string::String,
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoginRequest {
+    #[prost(string, tag="1")]
+    pub email: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub password: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoginResponse {
+    #[prost(bool, tag="1")]
+    pub success: bool,
+    #[prost(int32, tag="2")]
+    pub result_code: i32,
+    #[prost(string, tag="3")]
+    pub message: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod accounts_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -99,6 +115,23 @@ pub mod accounts_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        pub async fn login(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LoginRequest>,
+        ) -> Result<tonic::Response<super::LoginResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static("/accounts.Accounts/Login");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -112,6 +145,10 @@ pub mod accounts_server {
             &self,
             request: tonic::Request<super::CreateAccountRequest>,
         ) -> Result<tonic::Response<super::CreateAccountResponse>, tonic::Status>;
+        async fn login(
+            &self,
+            request: tonic::Request<super::LoginRequest>,
+        ) -> Result<tonic::Response<super::LoginResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct AccountsServer<T: Accounts> {
@@ -189,6 +226,42 @@ pub mod accounts_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = CreateAccountSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/accounts.Accounts/Login" => {
+                    #[allow(non_camel_case_types)]
+                    struct LoginSvc<T: Accounts>(pub Arc<T>);
+                    impl<T: Accounts> tonic::server::UnaryService<super::LoginRequest>
+                    for LoginSvc<T> {
+                        type Response = super::LoginResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::LoginRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { (*inner).login(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = LoginSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(
