@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use flair_core::store::snare::{Ensnared, DBConnection};
+use flair_core::store::snare::{DBConnection, Ensnared};
 
 use super::contract::AccountsRepositoryContract;
 use super::models::Account;
@@ -10,8 +10,21 @@ pub struct AccountsRepository {}
 impl AccountsRepositoryContract<sqlx::MySql> for AccountsRepository {
     async fn get_accounts<'c, C: DBConnection<'c>>(conn: C) -> Result<Vec<Account>, String> {
         match sqlx::query_as::<_, Account>("SELECT * FROM accounts")
-            .bind(73)
             .fetch_all(conn)
+            .await
+        {
+            Ok(articles) => Ok(articles),
+            Err(_) => Err("Could not fetch accounts".to_string()),
+        }
+    }
+
+    async fn get_account<'c, C: DBConnection<'c>>(
+        conn: C,
+        email: String,
+    ) -> Result<Option<Account>, String> {
+        match sqlx::query_as::<_, Account>("SELECT * FROM accounts WHERE email = ?")
+            .bind(email)
+            .fetch_optional(conn)
             .await
         {
             Ok(articles) => Ok(articles),

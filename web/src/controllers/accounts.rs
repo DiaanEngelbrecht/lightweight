@@ -17,7 +17,6 @@ impl Accounts for AccountsController {
         &self,
         request: Request<CreateAccountRequest>,
     ) -> Result<Response<CreateAccountResponse>, Status> {
-        log::info!("Inside account setup");
         let svr_ctx = flair_core::SERVER_CONTEXT.with(|ctx| ctx.clone());
 
         // Prepare salt
@@ -26,7 +25,6 @@ impl Accounts for AccountsController {
         rng.fill_bytes(&mut salt);
 
         let req_data = request.into_inner();
-        // let matches = argon2::verify_encoded(&hash, password).unwrap();
         let password = req_data.password.as_bytes();
 
         let config = argon2::Config::default();
@@ -78,6 +76,44 @@ impl Accounts for AccountsController {
         &self,
         request: Request<LoginRequest>,
     ) -> Result<Response<LoginResponse>, Status> {
-        todo!()
+        let req_data = request.into_inner();
+
+        let svr_ctx = flair_core::SERVER_CONTEXT.with(|ctx| ctx.clone());
+
+        let login_result: Result<&str, &str> = if let Ok(mut conn) = svr_ctx.db_pool.acquire().await
+        {
+            if let Ok(Some(account)) =
+                AccountsRepository::get_account(&mut conn, req_data.email).await
+            {
+                if Ok(true)
+                    == argon2::verify_encoded(&account.password_hash, req_data.password.as_bytes())
+                {
+                    Ok("Login successfull!")
+                } else {
+                    Err("Login failed, invalid credentials.")
+                }
+            } else {
+                Err("Login failed, invalid credentials.")
+            }
+        } else {
+            Err("Login failed due to internal server error, please try again later")
+        };
+
+        match login_result {
+            Ok(message) => {
+                return Ok(tonic::Response::new(LoginResponse {
+                    success: true,
+                    message: message.to_string(),
+                    result_code: 200,
+                }));
+            }
+            Err(message) => {
+                return Ok(tonic::Response::new(LoginResponse {
+                    success: true,
+                    message: message.to_string(),
+                    result_code: 403,
+                }));
+            }
+        }
     }
 }

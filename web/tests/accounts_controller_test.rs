@@ -1,6 +1,6 @@
 mod common;
 
-use lightweight_web::protos::accounts::{CreateAccountRequest, CreateAccountResponse};
+use lightweight_web::protos::accounts::{CreateAccountRequest, CreateAccountResponse, LoginRequest, LoginResponse};
 use lightweight_web::{
     controllers::accounts::AccountsController, protos::accounts::accounts_server::Accounts,
 };
@@ -31,6 +31,42 @@ async fn account_registration() {
             success: true,
             result_code: 201,
             message: "Account created successfully".to_string()
+        }
+    );
+
+    let request = Request::new(LoginRequest {
+        email: "someone@someplace.com".to_string(),
+        password: "password".to_string(),
+    });
+
+    let l_resp = controller.login(request).await;
+    assert_eq!(true, l_resp.is_ok());
+    let login_resp = l_resp.unwrap().into_inner();
+
+    assert_eq!(
+        login_resp,
+        LoginResponse {
+            success: true,
+            result_code: 200,
+            message: "Login successfull!".to_string()
+        }
+    );
+
+    let request = Request::new(LoginRequest {
+        email: "someone@someplace.com".to_string(),
+        password: "wrong_password".to_string(),
+    });
+
+    let l_resp = controller.login(request).await;
+    assert_eq!(true, l_resp.is_ok());
+    let login_resp = l_resp.unwrap().into_inner();
+
+    assert_eq!(
+        login_resp,
+        LoginResponse {
+            success: true,
+            result_code: 403,
+            message: "Login failed, invalid credentials.".to_string()
         }
     );
 }
