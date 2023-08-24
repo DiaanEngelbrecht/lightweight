@@ -2,3 +2,4 @@ bind-address: 0.0.0.0:50570
 database:
   num-connections: 10
   url: mysql://root:root@localhost:33060/lightweight_dev
+jwt-secret: LEdkDQeodemEBLemYwqkjP8Mq30AZMlJ

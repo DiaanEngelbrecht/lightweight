@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "kebab-case")]
 pub struct Config {
     pub bind_address: String,
+    pub jwt_secret: String,
     pub database: DatabaseConf,
 }
 

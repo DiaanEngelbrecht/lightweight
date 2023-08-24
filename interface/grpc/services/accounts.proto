@@ -28,4 +28,5 @@ message LoginResponse {
   bool success = 1;
   int32 result_code = 2;
   string message = 3;
+  string auth_token = 4;
 }

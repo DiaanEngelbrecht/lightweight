@@ -2,11 +2,15 @@ use crate::protos::accounts::{
     accounts_server::Accounts, CreateAccountRequest, CreateAccountResponse, LoginRequest,
     LoginResponse,
 };
+use chrono::{DateTime, Utc, Duration};
+use hmac::{Hmac, Mac};
+use jwt::{Claims, RegisteredClaims, SignWithKey};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
 use lightweight_store::repositories::accounts::implementation::AccountsRepository;
 use lightweight_store::repositories::accounts::models::Account;
 use rand::rngs::StdRng;
 use rand::{RngCore, SeedableRng};
+use sha2::Sha256;
 use tonic::{async_trait, Request, Response, Status};
 
 flair_derive::controller!(AccountsController);
@@ -49,7 +53,7 @@ impl Accounts for AccountsController {
         };
 
         if let Ok(mut conn) = svr_ctx.db_pool.acquire().await {
-            let create_result = AccountsRepository::create_account(&mut conn, new_account).await;
+            let create_result = AccountsRepository::create_account(&mut *conn, new_account).await;
             match create_result {
                 Ok(_) => {
                     return Ok(tonic::Response::new(CreateAccountResponse {
@@ -83,7 +87,7 @@ impl Accounts for AccountsController {
         let login_result: Result<&str, &str> = if let Ok(mut conn) = svr_ctx.db_pool.acquire().await
         {
             if let Ok(Some(account)) =
-                AccountsRepository::get_account(&mut conn, req_data.email).await
+                AccountsRepository::get_account(&mut *conn, req_data.email).await
             {
                 if Ok(true)
                     == argon2::verify_encoded(&account.password_hash, req_data.password.as_bytes())
@@ -101,10 +105,26 @@ impl Accounts for AccountsController {
 
         match login_result {
             Ok(message) => {
+                // Generate the jwt
+                //
+                //
+                let utc: DateTime<Utc> = Utc::now() + Duration::minutes(5);
+                let key: Hmac<Sha256> = Hmac::new_from_slice(svr_ctx).unwrap();
+                let mut claims = Claims::new(RegisteredClaims {
+                    issuer: None,
+                    subject: None,
+                    audience: None,
+                    expiration: Some(utc.timestamp() as u64),
+                    not_before: Some(utc.timestamp() as u64),
+                    issued_at: Some(utc.timestamp() as u64),
+                    json_web_token_id: None,
+                });
+                let token_str = claims.sign_with_key(&key);
+
                 return Ok(tonic::Response::new(LoginResponse {
                     success: true,
-                    message: message.to_string(),
                     result_code: 200,
+                    message: message.to_string(),
                 }));
             }
             Err(message) => {
