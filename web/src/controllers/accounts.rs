@@ -1,8 +1,12 @@
+use std::sync::Arc;
+
+use crate::config::Config;
 use crate::protos::accounts::{
     accounts_server::Accounts, CreateAccountRequest, CreateAccountResponse, LoginRequest,
     LoginResponse,
 };
-use chrono::{DateTime, Utc, Duration};
+use chrono::{DateTime, Duration, Utc};
+use flair_core::ServerContext;
 use hmac::{Hmac, Mac};
 use jwt::{Claims, RegisteredClaims, SignWithKey};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
@@ -14,14 +18,16 @@ use sha2::Sha256;
 use tonic::{async_trait, Request, Response, Status};
 
 flair_derive::controller!(AccountsController);
+
 #[async_trait]
 impl Accounts for AccountsController {
-    #[endpoint]
     async fn create_account(
         &self,
         request: Request<CreateAccountRequest>,
     ) -> Result<Response<CreateAccountResponse>, Status> {
-        let svr_ctx = flair_core::SERVER_CONTEXT.with(|ctx| ctx.clone());
+        let svr_ctx = flair_core::helpers::get_context(|core_ctx: &ServerContext<Arc<Config>>| {
+            core_ctx.clone()
+        });
 
         // Prepare salt
         let mut salt: [u8; 64] = [0; 64];
@@ -47,7 +53,6 @@ impl Accounts for AccountsController {
         let new_account = Account {
             id: 0,
             name: req_data.name.clone(),
-            salt: salt.to_vec(),
             email: req_data.email.clone(),
             password_hash: hashed_password.to_string(),
         };
@@ -75,14 +80,15 @@ impl Accounts for AccountsController {
         }));
     }
 
-    #[endpoint]
     async fn login(
         &self,
         request: Request<LoginRequest>,
     ) -> Result<Response<LoginResponse>, Status> {
         let req_data = request.into_inner();
 
-        let svr_ctx = flair_core::SERVER_CONTEXT.with(|ctx| ctx.clone());
+        let svr_ctx = flair_core::helpers::get_context(|core_ctx: &ServerContext<Arc<Config>>| {
+            core_ctx.clone()
+        });
 
         let login_result: Result<&str, &str> = if let Ok(mut conn) = svr_ctx.db_pool.acquire().await
         {
@@ -109,8 +115,10 @@ impl Accounts for AccountsController {
                 //
                 //
                 let utc: DateTime<Utc> = Utc::now() + Duration::minutes(5);
-                let key: Hmac<Sha256> = Hmac::new_from_slice(svr_ctx).unwrap();
-                let mut claims = Claims::new(RegisteredClaims {
+                let key = svr_ctx.config.jwt_secret.clone();
+                let key: Hmac<Sha256> = Hmac::new_from_slice(key.as_bytes()).unwrap();
+
+                let claims = Claims::new(RegisteredClaims {
                     issuer: None,
                     subject: None,
                     audience: None,
@@ -119,10 +127,13 @@ impl Accounts for AccountsController {
                     issued_at: Some(utc.timestamp() as u64),
                     json_web_token_id: None,
                 });
-                let token_str = claims.sign_with_key(&key);
+                let token_str = claims
+                    .sign_with_key(&key)
+                    .expect("Should have been able to sign");
 
                 return Ok(tonic::Response::new(LoginResponse {
                     success: true,
+                    auth_token: token_str.to_string(),
                     result_code: 200,
                     message: message.to_string(),
                 }));
@@ -130,6 +141,7 @@ impl Accounts for AccountsController {
             Err(message) => {
                 return Ok(tonic::Response::new(LoginResponse {
                     success: true,
+                    auth_token: "".to_string(),
                     message: message.to_string(),
                     result_code: 403,
                 }));

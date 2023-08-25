@@ -10,7 +10,7 @@ use tonic::Request;
 async fn account_registration() {
     // 1. Setup
     let server_ctx = common::setup("./config/test.yml").await;
-    let controller = AccountsController::new(server_ctx);
+    let controller = AccountsController::new();
 
     // 2. Build your request
     let request = Request::new(CreateAccountRequest {

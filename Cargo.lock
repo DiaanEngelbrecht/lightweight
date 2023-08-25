@@ -550,6 +550,8 @@ dependencies = [
  "sqlx",
  "syn 2.0.18",
  "tokio",
+ "tonic",
+ "tower",
 ]
 
 [[package]]
