@@ -1,5 +1,5 @@
-use lightweight_web::config::Config;
 use flair_derive::setup_server;
+use lightweight_web::config::Config;
 use std::{error::Error, str::FromStr};
 
 #[tokio::main]

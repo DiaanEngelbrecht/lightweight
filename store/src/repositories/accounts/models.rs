@@ -1,5 +1,5 @@
 use flair_derive::Ensnare;
-use sqlx:: FromRow;
+use sqlx::FromRow;
 
 #[derive(Clone, Debug, FromRow, Ensnare)]
 pub struct Account {
