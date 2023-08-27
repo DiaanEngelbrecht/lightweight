@@ -5,7 +5,6 @@ CREATE TABLE accounts
 
     `name`           VARCHAR(128)     NOT NULL,
     `email`          VARCHAR(128)     NOT NULL,
-    `salt`           BINARY(64)       NOT NULL,
     `password_hash`  VARCHAR(255)     NOT NULL,
 
     `updated_at`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
