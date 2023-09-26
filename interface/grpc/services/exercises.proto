@@ -1,0 +1,33 @@
+
+syntax = "proto3";
+package exercise;
+option go_package = "/apis/lightweight/services";
+
+service Exercises {
+  rpc ListExercises (ListExercisesRequest) returns (ListExercisesResponse);
+  rpc CreateExercise (CreateExerciseRequest) returns (CreateExerciseResponse);
+}
+
+message ListExercisesRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message ListExercisesResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message CreateExerciseRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message CreateExerciseResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+  string auth_token = 4;
+}
