@@ -6,6 +6,8 @@ use crate::protos::accounts::{
     LoginResponse,
 };
 use chrono::{DateTime, Duration, Utc};
+use flair_core::config::get_config;
+use flair_core::store::get_conn;
 use flair_core::ServerContext;
 use hmac::{Hmac, Mac};
 use jwt::{Claims, RegisteredClaims, SignWithKey};
@@ -17,6 +19,8 @@ use rand::{RngCore, SeedableRng};
 use sha2::Sha256;
 use tonic::{async_trait, Request, Response, Status};
 
+use super::AppError;
+
 flair_derive::controller!(AccountsController);
 
 #[async_trait]
@@ -25,10 +29,6 @@ impl Accounts for AccountsController {
         &self,
         request: Request<CreateAccountRequest>,
     ) -> Result<Response<CreateAccountResponse>, Status> {
-        let svr_ctx = flair_core::helpers::get_context(|core_ctx: &ServerContext<Arc<Config>>| {
-            core_ctx.clone()
-        });
-
         // Prepare salt
         let mut salt: [u8; 64] = [0; 64];
         let mut rng = StdRng::from_entropy();
@@ -57,26 +57,12 @@ impl Accounts for AccountsController {
             password_hash: hashed_password.to_string(),
         };
 
-        if let Ok(mut conn) = svr_ctx.db_pool.acquire().await {
-            let create_result = AccountsRepository::create_account(&mut *conn, new_account).await;
-            match create_result {
-                Ok(_) => {
-                    return Ok(tonic::Response::new(CreateAccountResponse {
-                        success: true,
-                        result_code: 201,
-                        message: "Account created successfully".to_string(),
-                    }))
-                }
-                Err(e) => {
-                    log::error!("Could not insert new account into DB, err => {}", e)
-                }
-            }
-        }
-
+        let mut conn = get_conn::<AppError, Config>().await?;
+        let _ = AccountsRepository::create_account::<_, AppError>(&mut *conn, new_account).await?;
         return Ok(tonic::Response::new(CreateAccountResponse {
-            success: false,
-            message: "Could not create account".to_string(),
-            result_code: 500,
+            success: true,
+            result_code: 201,
+            message: "Account created successfully".to_string(),
         }));
     }
 
@@ -86,36 +72,26 @@ impl Accounts for AccountsController {
     ) -> Result<Response<LoginResponse>, Status> {
         let req_data = request.into_inner();
 
-        let svr_ctx = flair_core::helpers::get_context(|core_ctx: &ServerContext<Arc<Config>>| {
-            core_ctx.clone()
-        });
-
-        let login_result: Result<&str, &str> = if let Ok(mut conn) = svr_ctx.db_pool.acquire().await
+        let mut conn = get_conn::<AppError, Config>().await?;
+        let login_result: Result<&str, &str> = if let Some(account) =
+            AccountsRepository::get_account::<_, AppError>(&mut *conn, req_data.email).await?
         {
-            if let Ok(Some(account)) =
-                AccountsRepository::get_account(&mut *conn, req_data.email).await
+            if Ok(true)
+                == argon2::verify_encoded(&account.password_hash, req_data.password.as_bytes())
             {
-                if Ok(true)
-                    == argon2::verify_encoded(&account.password_hash, req_data.password.as_bytes())
-                {
-                    Ok("Login successfull!")
-                } else {
-                    Err("Login failed, invalid credentials.")
-                }
+                Ok("Login successfull!")
             } else {
                 Err("Login failed, invalid credentials.")
             }
         } else {
-            Err("Login failed due to internal server error, please try again later")
+            Err("Login failed, invalid credentials.")
         };
 
         match login_result {
             Ok(message) => {
                 // Generate the jwt
-                //
-                //
                 let utc: DateTime<Utc> = Utc::now() + Duration::minutes(5);
-                let key = svr_ctx.config.jwt_secret.clone();
+                let key = get_config::<Config>().jwt_secret.clone();
                 let key: Hmac<Sha256> = Hmac::new_from_slice(key.as_bytes()).unwrap();
 
                 let claims = Claims::new(RegisteredClaims {

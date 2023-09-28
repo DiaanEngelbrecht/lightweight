@@ -8,36 +8,32 @@ pub struct AccountsRepository {}
 
 #[async_trait]
 impl AccountsRepositoryContract<sqlx::MySql> for AccountsRepository {
-    async fn get_accounts<'c, C: DBConnection<'c>>(conn: C) -> Result<Vec<Account>, String> {
-        match sqlx::query_as::<_, Account>("SELECT * FROM accounts")
+    async fn get_accounts<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(
+        conn: C,
+    ) -> Result<Vec<Account>, E> {
+        let accounts = sqlx::query_as::<_, Account>("SELECT * FROM accounts")
             .fetch_all(conn)
-            .await
-        {
-            Ok(articles) => Ok(articles),
-            Err(_) => Err("Could not fetch accounts".to_string()),
-        }
+            .await?;
+        Ok(accounts)
     }
 
-    async fn get_account<'c, C: DBConnection<'c>>(
+    async fn get_account<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(
         conn: C,
         email: String,
-    ) -> Result<Option<Account>, String> {
-        match sqlx::query_as::<_, Account>("SELECT * FROM accounts WHERE email = ?")
+    ) -> Result<Option<Account>, E> {
+        let accounts = sqlx::query_as::<_, Account>("SELECT * FROM accounts WHERE email = ?")
             .bind(email)
             .fetch_optional(conn)
-            .await
-        {
-            Ok(articles) => Ok(articles),
-            Err(_) => Err("Could not fetch accounts".to_string()),
-        }
+            .await?;
+        Ok(accounts)
     }
 
-    async fn create_account<'c, C: DBConnection<'c>>(
+    async fn create_account<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(
         conn: C,
         account: Account,
-    ) -> Result<i64, sqlx::Error> {
-        let result = account.trap("accounts").insert().execute(conn).await;
+    ) -> Result<i64, E> {
+        let result = account.trap("accounts").insert().execute(conn).await?;
 
-        result.map(|r| r.last_insert_id() as i64)
+        Ok(result.last_insert_id() as i64)
     }
 }

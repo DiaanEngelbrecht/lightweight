@@ -1050,6 +1050,7 @@ dependencies = [
  "flair_core",
  "flair_derive",
  "sqlx",
+ "thiserror",
  "tokio",
 ]
 
@@ -1076,6 +1077,7 @@ dependencies = [
  "serde_yaml",
  "sha2",
  "sqlx",
+ "thiserror",
  "tokio",
  "tonic",
  "tonic-build",
