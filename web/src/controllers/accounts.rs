@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use crate::config::Config;
 use crate::protos::accounts::{
     accounts_server::Accounts, CreateAccountRequest, CreateAccountResponse, LoginRequest,
@@ -8,7 +6,6 @@ use crate::protos::accounts::{
 use chrono::{DateTime, Duration, Utc};
 use flair_core::config::get_config;
 use flair_core::store::get_conn;
-use flair_core::ServerContext;
 use hmac::{Hmac, Mac};
 use jwt::{Claims, RegisteredClaims, SignWithKey};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;

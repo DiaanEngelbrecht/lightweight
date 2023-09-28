@@ -18,7 +18,7 @@ flair_derive::controller!(ExercisesController);
 impl Exercises for ExercisesController {
     async fn list_exercises(
         &self,
-        request: Request<ListExercisesRequest>,
+        _request: Request<ListExercisesRequest>,
     ) -> Result<Response<ListExercisesResponse>, Status> {
         todo!()
     }
@@ -43,7 +43,7 @@ impl Exercises for ExercisesController {
             deleted_by: None,
         };
 
-        let create_result =
+        let _ =
             ExerciseRepository::create_exercise::<_, AppError>(&mut *conn, new_account).await?;
 
         return Ok(tonic::Response::new(CreateExerciseResponse {
