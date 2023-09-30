@@ -29,22 +29,19 @@ impl Exercises for ExercisesController {
     ) -> Result<Response<CreateExerciseResponse>, Status> {
         let req_data = request.into_inner();
 
-        let now = Utc::now().naive_utc();
-
-        let mut conn = get_conn::<AppError, Config>().await?;
-
-        let new_account = Exercise {
+        let new_exercise = Exercise {
             id: 0,
             name: req_data.name.clone(),
             category_id: req_data.category_id,
-            updated_at: now,
+            updated_at: Utc::now().naive_utc(),
             updated_by: 1,
             deleted_at: None,
             deleted_by: None,
         };
 
-        let _ =
-            ExerciseRepository::create_exercise::<_, AppError>(&mut *conn, new_account).await?;
+        let mut conn = get_conn::<AppError>().await?;
+
+        let _ = ExerciseRepository::create_exercise::<_, AppError>(&mut *conn, new_exercise).await?;
 
         return Ok(tonic::Response::new(CreateExerciseResponse {
             success: true,

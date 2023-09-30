@@ -12,7 +12,11 @@ impl ExerciseRepositoryContract<sqlx::MySql> for ExerciseRepository {
         conn: C,
         exercise: Exercise,
     ) -> Result<i64, E> {
-        let result = exercise.trap("exercises").insert().execute(conn).await?;
+        let result = exercise
+            .trap("exercises")
+            .insert()
+            .execute(conn)
+            .await?;
 
         Ok(result.last_insert_id() as i64)
     }

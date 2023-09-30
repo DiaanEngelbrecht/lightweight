@@ -4,7 +4,6 @@ use crate::protos::accounts::{
     LoginResponse,
 };
 use chrono::{DateTime, Duration, Utc};
-use flair_core::config::get_config;
 use flair_core::store::get_conn;
 use hmac::{Hmac, Mac};
 use jwt::{Claims, RegisteredClaims, SignWithKey};
@@ -54,7 +53,7 @@ impl Accounts for AccountsController {
             password_hash: hashed_password.to_string(),
         };
 
-        let mut conn = get_conn::<AppError, Config>().await?;
+        let mut conn = get_conn::<AppError>().await?;
         let _ = AccountsRepository::create_account::<_, AppError>(&mut *conn, new_account).await?;
         return Ok(tonic::Response::new(CreateAccountResponse {
             success: true,
@@ -69,7 +68,7 @@ impl Accounts for AccountsController {
     ) -> Result<Response<LoginResponse>, Status> {
         let req_data = request.into_inner();
 
-        let mut conn = get_conn::<AppError, Config>().await?;
+        let mut conn = get_conn::<AppError>().await?;
         let login_result: Result<&str, &str> = if let Some(account) =
             AccountsRepository::get_account::<_, AppError>(&mut *conn, req_data.email).await?
         {
@@ -88,7 +87,9 @@ impl Accounts for AccountsController {
             Ok(message) => {
                 // Generate the jwt
                 let utc: DateTime<Utc> = Utc::now() + Duration::minutes(5);
-                let key = get_config::<Config>().jwt_secret.clone();
+                // let key = get_config::<Config>().jwt_secret.clone();
+                let config = flair_core::helpers::get_context_arc(|config: &Config| config.clone());
+                let key = config.jwt_secret.clone();
                 let key: Hmac<Sha256> = Hmac::new_from_slice(key.as_bytes()).unwrap();
 
                 let claims = Claims::new(RegisteredClaims {
