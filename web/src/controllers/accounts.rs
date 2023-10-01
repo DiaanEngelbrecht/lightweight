@@ -88,7 +88,7 @@ impl Accounts for AccountsController {
                 // Generate the jwt
                 let utc: DateTime<Utc> = Utc::now() + Duration::minutes(5);
                 // let key = get_config::<Config>().jwt_secret.clone();
-                let config = flair_core::helpers::get_context_arc(|config: &Config| config.clone());
+                let config = flair_core::helpers::get_context(|config: &Config| config.clone());
                 let key = config.jwt_secret.clone();
                 let key: Hmac<Sha256> = Hmac::new_from_slice(key.as_bytes()).unwrap();
 
