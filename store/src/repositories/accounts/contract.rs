@@ -10,7 +10,9 @@ pub trait AccountsRepositoryContract<DB: Database> {
         email: String,
     ) -> Result<Option<Account>, E>;
 
-    async fn get_accounts<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(conn: C) -> Result<Vec<Account>, E>;
+    async fn get_accounts<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(
+        conn: C,
+    ) -> Result<Vec<Account>, E>;
 
     async fn create_account<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(
         conn: C,

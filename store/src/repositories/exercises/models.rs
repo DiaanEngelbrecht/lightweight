@@ -1,4 +1,4 @@
-use chrono::NaiveDateTime;
+use chrono::{NaiveDateTime, Utc};
 use flair_derive::Ensnare;
 use sqlx::FromRow;
 
@@ -13,7 +13,6 @@ pub struct Exercise {
     pub deleted_by: Option<i64>,
 }
 
-
 #[derive(Clone, Debug, FromRow, Ensnare)]
 pub struct ExerciseCategory {
     pub id: i64,
@@ -22,4 +21,18 @@ pub struct ExerciseCategory {
     pub updated_by: Option<i64>,
     pub deleted_at: Option<NaiveDateTime>,
     pub deleted_by: Option<i64>,
+}
+
+impl Exercise {
+    pub fn new(name: String, category_id: i64) -> Self {
+        Self {
+            id: 0,
+            name,
+            category_id,
+            updated_at: Utc::now().naive_utc(),
+            updated_by: 1,
+            deleted_at: None,
+            deleted_by: None,
+        }
+    }
 }
