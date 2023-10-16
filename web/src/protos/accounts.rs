@@ -41,8 +41,8 @@ pub struct LoginResponse {
 /// Generated client implementations.
 pub mod accounts_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    use tonic::codegen::*;
     #[derive(Debug, Clone)]
     pub struct AccountsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -86,9 +86,8 @@ pub mod accounts_client {
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
         {
             AccountsClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -126,23 +125,16 @@ pub mod accounts_client {
         pub async fn create_account(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAccountRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::CreateAccountResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::CreateAccountResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/accounts.Accounts/CreateAccount",
-            );
+            let path = http::uri::PathAndQuery::from_static("/accounts.Accounts/CreateAccount");
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("accounts.Accounts", "CreateAccount"));
@@ -152,19 +144,17 @@ pub mod accounts_client {
             &mut self,
             request: impl tonic::IntoRequest<super::LoginRequest>,
         ) -> std::result::Result<tonic::Response<super::LoginResponse>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/accounts.Accounts/Login");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("accounts.Accounts", "Login"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("accounts.Accounts", "Login"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -179,10 +169,7 @@ pub mod accounts_server {
         async fn create_account(
             &self,
             request: tonic::Request<super::CreateAccountRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::CreateAccountResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::CreateAccountResponse>, tonic::Status>;
         async fn login(
             &self,
             request: tonic::Request<super::LoginRequest>,
@@ -211,10 +198,7 @@ pub mod accounts_server {
                 max_encoding_message_size: None,
             }
         }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -270,23 +254,15 @@ pub mod accounts_server {
                 "/accounts.Accounts/CreateAccount" => {
                     #[allow(non_camel_case_types)]
                     struct CreateAccountSvc<T: Accounts>(pub Arc<T>);
-                    impl<
-                        T: Accounts,
-                    > tonic::server::UnaryService<super::CreateAccountRequest>
-                    for CreateAccountSvc<T> {
+                    impl<T: Accounts> tonic::server::UnaryService<super::CreateAccountRequest> for CreateAccountSvc<T> {
                         type Response = super::CreateAccountResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::CreateAccountRequest>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                (*inner).create_account(request).await
-                            };
+                            let fut = async move { (*inner).create_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -316,13 +292,9 @@ pub mod accounts_server {
                 "/accounts.Accounts/Login" => {
                     #[allow(non_camel_case_types)]
                     struct LoginSvc<T: Accounts>(pub Arc<T>);
-                    impl<T: Accounts> tonic::server::UnaryService<super::LoginRequest>
-                    for LoginSvc<T> {
+                    impl<T: Accounts> tonic::server::UnaryService<super::LoginRequest> for LoginSvc<T> {
                         type Response = super::LoginResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::LoginRequest>,
@@ -355,18 +327,14 @@ pub mod accounts_server {
                     };
                     Box::pin(fut)
                 }
-                _ => {
-                    Box::pin(async move {
-                        Ok(
-                            http::Response::builder()
-                                .status(200)
-                                .header("grpc-status", "12")
-                                .header("content-type", "application/grpc")
-                                .body(empty_body())
-                                .unwrap(),
-                        )
-                    })
-                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .header("content-type", "application/grpc")
+                        .body(empty_body())
+                        .unwrap())
+                }),
             }
         }
     }
