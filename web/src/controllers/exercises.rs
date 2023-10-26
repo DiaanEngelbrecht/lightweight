@@ -8,7 +8,6 @@ use lightweight_store::repositories::exercises::implementation::ExerciseReposito
 use lightweight_store::repositories::exercises::models::Exercise;
 use tonic::async_trait;
 use tonic::{Request, Response, Status};
-
 use super::AppError;
 
 flair_derive::controller!(ExercisesController);

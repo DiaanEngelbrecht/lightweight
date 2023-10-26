@@ -1,7 +1,7 @@
 use crate::config::Config;
 use crate::protos::accounts::{
-    accounts_server::Accounts, CreateAccountRequest, CreateAccountResponse, LoginRequest,
-    LoginResponse,
+    accounts_server::Accounts, AccountDetailsRequest, AccountDetailsResponse, CreateAccountRequest,
+    CreateAccountResponse, LoginRequest, LoginResponse,
 };
 use chrono::{DateTime, Duration, Utc};
 use flair_core::store::get_conn;
@@ -121,5 +121,12 @@ impl Accounts for AccountsController {
                 }));
             }
         }
+    }
+
+    async fn get_account_details(
+        &self,
+        request: Request<AccountDetailsRequest>,
+    ) -> Result<Response<AccountDetailsResponse>, Status> {
+        todo!()
     }
 }

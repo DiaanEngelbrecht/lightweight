@@ -13,6 +13,7 @@ path = "src/entry/main.rs"
 flair_core = { version = "*", path = "../../flair/core" }
 flair_derive = { version = "*", path = "../../flair/derive" }
 lightweight_store = { version = "*", path = "../store" }
+lightweight_core = { version = "*", path = "../core" }
 
 rust-argon2 = "1.0"
 thiserror = "1.0"

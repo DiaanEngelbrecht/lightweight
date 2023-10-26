@@ -2,6 +2,7 @@
 
 members = [
     "web",
+    "core",
     "store"
 ]
 resolver = "1"
