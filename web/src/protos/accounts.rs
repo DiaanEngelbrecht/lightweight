@@ -1,5 +1,25 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAccountDetailsRequest {
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub email: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub password: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAccountDetailsResponse {
+    #[prost(bool, tag = "1")]
+    pub success: bool,
+    #[prost(int32, tag = "2")]
+    pub result_code: i32,
+    #[prost(string, tag = "3")]
+    pub message: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountDetailsRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -212,6 +232,31 @@ pub mod accounts_client {
                 .insert(GrpcMethod::new("accounts.Accounts", "GetAccountDetails"));
             self.inner.unary(req, path, codec).await
         }
+        pub async fn update_account_details(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAccountDetailsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateAccountDetailsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/accounts.Accounts/UpdateAccountDetails",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("accounts.Accounts", "UpdateAccountDetails"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -237,6 +282,13 @@ pub mod accounts_server {
             request: tonic::Request<super::AccountDetailsRequest>,
         ) -> std::result::Result<
             tonic::Response<super::AccountDetailsResponse>,
+            tonic::Status,
+        >;
+        async fn update_account_details(
+            &self,
+            request: tonic::Request<super::UpdateAccountDetailsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateAccountDetailsResponse>,
             tonic::Status,
         >;
     }
@@ -438,6 +490,52 @@ pub mod accounts_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = GetAccountDetailsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/accounts.Accounts/UpdateAccountDetails" => {
+                    #[allow(non_camel_case_types)]
+                    struct UpdateAccountDetailsSvc<T: Accounts>(pub Arc<T>);
+                    impl<
+                        T: Accounts,
+                    > tonic::server::UnaryService<super::UpdateAccountDetailsRequest>
+                    for UpdateAccountDetailsSvc<T> {
+                        type Response = super::UpdateAccountDetailsResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::UpdateAccountDetailsRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                (*inner).update_account_details(request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = UpdateAccountDetailsSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

@@ -6,8 +6,20 @@ service Accounts {
   rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc GetAccountDetails (AccountDetailsRequest) returns (AccountDetailsResponse);
+  rpc UpdateAccountDetails (UpdateAccountDetailsRequest) returns (UpdateAccountDetailsResponse);
 }
 
+message UpdateAccountDetailsRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message UpdateAccountDetailsResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
 
 message AccountDetailsRequest {
   string name = 1;

@@ -539,7 +539,7 @@ checksum = "0ce7134b9999ecaf8bcd65542e436736ef32ddca1b3e06094cb6ec5755203b80"
 
 [[package]]
 name = "flair_core"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "log",
  "log4rs",
@@ -552,7 +552,7 @@ dependencies = [
 
 [[package]]
 name = "flair_derive"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "convert_case",
  "flair_core",

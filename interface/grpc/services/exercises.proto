@@ -1,4 +1,3 @@
-
 syntax = "proto3";
 package exercises;
 option go_package = "/apis/lightweight/services";
