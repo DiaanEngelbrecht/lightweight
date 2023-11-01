@@ -1,5 +1,5 @@
 use chrono::{NaiveDateTime, Utc};
-use flair_derive::Ensnare;
+use cali_derive::Ensnare;
 use sqlx::FromRow;
 
 #[derive(Clone, Debug, FromRow, Ensnare)]

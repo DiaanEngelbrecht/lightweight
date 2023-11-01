@@ -5,7 +5,7 @@ use crate::protos::accounts::{
     UpdateAccountDetailsResponse,
 };
 use chrono::{DateTime, Duration, Utc};
-use flair_core::store::get_conn;
+use cali_core::store::get_conn;
 use hmac::{Hmac, Mac};
 use jwt::{Claims, RegisteredClaims, SignWithKey};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
@@ -18,7 +18,7 @@ use tonic::{async_trait, Request, Response, Status};
 
 use super::AppError;
 
-flair_derive::controller!(AccountsController);
+cali_derive::controller!(AccountsController);
 
 #[async_trait]
 impl Accounts for AccountsController {
@@ -89,7 +89,7 @@ impl Accounts for AccountsController {
                 // Generate the jwt
                 let utc: DateTime<Utc> = Utc::now() + Duration::minutes(5);
                 // let key = get_config::<Config>().jwt_secret.clone();
-                let config = flair_core::helpers::get_context(|config: &Config| config.clone());
+                let config = cali_core::helpers::get_context(|config: &Config| config.clone());
                 let key = config.jwt_secret.clone();
                 let key: Hmac<Sha256> = Hmac::new_from_slice(key.as_bytes()).unwrap();
 

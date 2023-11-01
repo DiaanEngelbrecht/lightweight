@@ -2,7 +2,7 @@ use crate::protos::exercises::exercises_server::Exercises;
 use crate::protos::exercises::{
     CreateExerciseRequest, CreateExerciseResponse, ListExercisesRequest, ListExercisesResponse,
 };
-use flair_core::store::get_conn;
+use cali_core::store::get_conn;
 use lightweight_store::repositories::exercises::contract::ExerciseRepositoryContract;
 use lightweight_store::repositories::exercises::implementation::ExerciseRepository;
 use lightweight_store::repositories::exercises::models::Exercise;
@@ -10,7 +10,7 @@ use tonic::async_trait;
 use tonic::{Request, Response, Status};
 use super::AppError;
 
-flair_derive::controller!(ExercisesController);
+cali_derive::controller!(ExercisesController);
 #[async_trait]
 impl Exercises for ExercisesController {
     async fn list_exercises(

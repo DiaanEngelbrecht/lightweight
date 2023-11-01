@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use flair_core::store::snare::{DBConnection, Ensnared};
+use cali_core::store::snare::{DBConnection, Ensnared};
 
 use super::contract::AccountsRepositoryContract;
 use super::models::Account;

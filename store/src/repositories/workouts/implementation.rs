@@ -1,7 +1,7 @@
 use super::contract::WorkoutsRepositoryContract;
 use super::models::Workout;
 use async_trait::async_trait;
-use flair_core::store::snare::{DBConnection, Ensnared};
+use cali_core::store::snare::{DBConnection, Ensnared};
 pub struct WorkoutsRepository {}
 #[async_trait]
 impl WorkoutsRepositoryContract<sqlx::MySql> for WorkoutsRepository {

@@ -1,3 +1,3 @@
 use lightweight_web::config::Config;
 
-flair_derive::test_runner!();
+cali_derive::test_runner!();

@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-flair_core = { version = "*", path = "../../flair/core" }
-flair_derive = { version = "*", path = "../../flair/derive" }
+cali_core = "0.2.0"
+cali_derive = "0.2.0"
 
 tokio = { version = "1.32", features = ["rt-multi-thread", "time", "macros", "signal", "process"] }
 chrono = { version = "0.4", features = ["serde"] }

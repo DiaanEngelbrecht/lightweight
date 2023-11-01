@@ -1,6 +1,6 @@
 use crate::repositories::workouts::models::Workout;
 use async_trait::async_trait;
-use flair_core::store::snare::DBConnection;
+use cali_core::store::snare::DBConnection;
 use sqlx::Database;
 #[async_trait]
 pub trait WorkoutsRepositoryContract<DB: Database> {

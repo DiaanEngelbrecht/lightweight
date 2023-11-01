@@ -1,6 +1,6 @@
 use crate::repositories::exercises::models::Exercise;
 use async_trait::async_trait;
-use flair_core::store::snare::DBConnection;
+use cali_core::store::snare::DBConnection;
 use sqlx::Database;
 
 #[async_trait]
