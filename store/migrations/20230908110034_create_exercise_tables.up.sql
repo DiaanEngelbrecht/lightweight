@@ -30,3 +30,17 @@ CREATE TABLE exercises
     PRIMARY KEY (id),
     CONSTRAINT e_category_ref FOREIGN KEY ec_ref_key (category_id) REFERENCES exercise_categories(id)
 );
+
+INSERT INTO exercise_categories
+  (name) 
+VALUES 
+  ("Abs"),
+  ("Back"),
+  ("Biceps"),
+  ("Calves"),
+  ("Chest"),
+  ("Cardio"),
+  ("Hamstrings"),
+  ("Quads"),
+  ("Shoulders"),
+  ("Triceps");

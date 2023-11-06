@@ -4,7 +4,10 @@ use lightweight_web::{
     controllers::{accounts::AccountsController, exercises::ExercisesController},
     protos::{
         accounts::{accounts_server::Accounts, LoginRequest},
-        exercises::{exercises_server::Exercises, CreateExerciseRequest, CreateExerciseResponse},
+        exercises::{
+            exercises_server::Exercises, CreateExerciseRequest, CreateExerciseResponse,
+            ListCategoriesRequest,
+        },
     },
 };
 use tonic::Request;
@@ -21,19 +24,21 @@ async fn exercise_creation() {
             password: "password".to_string(),
         });
         let l_resp = accounts_controller.login(request).await;
-        let login_resp = l_resp.unwrap().into_inner();
+        let _login_resp = l_resp.unwrap().into_inner();
 
-        // 2. Build your request
+        let request = Request::new(ListCategoriesRequest {
+            filter: "".to_string(),
+        });
+        let c_resp = exercises_controller.list_categories(request).await;
+        assert_eq!(true, c_resp.is_ok());
+        let c_resp_inner = c_resp.unwrap().into_inner();
+        println!("{:?}", c_resp_inner);
+
         let request = Request::new(CreateExerciseRequest {
             name: "Someone".to_string(),
-            category_id: 0,
-            auth_token: login_resp.auth_token.clone(),
+            category_id: c_resp_inner.categories.first().unwrap().id,
         });
-
-        // 3. Hit your API
         let t_resp = exercises_controller.create_exercise(request).await;
-
-        // 4. Make sure it works
         assert_eq!(true, t_resp.is_ok());
         let resp = t_resp.unwrap().into_inner();
         assert_eq!(
@@ -41,7 +46,7 @@ async fn exercise_creation() {
             CreateExerciseResponse {
                 success: true,
                 result_code: 201,
-                message: "Account created successfully".to_string()
+                message: "Exercise created successfully".to_string()
             }
         );
     })

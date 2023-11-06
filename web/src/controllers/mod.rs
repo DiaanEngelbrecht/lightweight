@@ -2,7 +2,6 @@ use thiserror::Error as ThisError;
 use tonic::Status;
 
 pub mod accounts;
-
 pub mod exercises;
 
 impl From<AppError> for Status {

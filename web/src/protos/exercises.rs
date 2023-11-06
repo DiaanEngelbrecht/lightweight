@@ -1,5 +1,17 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCategoriesRequest {
+    #[prost(string, tag = "1")]
+    pub filter: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCategoriesResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub categories: ::prost::alloc::vec::Vec<Category>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExercisesRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -25,8 +37,6 @@ pub struct CreateExerciseRequest {
     pub name: ::prost::alloc::string::String,
     #[prost(int64, tag = "2")]
     pub category_id: i64,
-    #[prost(string, tag = "4")]
-    pub auth_token: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -37,6 +47,14 @@ pub struct CreateExerciseResponse {
     pub result_code: i32,
     #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Category {
+    #[prost(int64, tag = "1")]
+    pub id: i64,
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod exercises_client {
@@ -123,6 +141,31 @@ pub mod exercises_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
+        pub async fn list_categories(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCategoriesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCategoriesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/ListCategories",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("exercises.Exercises", "ListCategories"));
+            self.inner.unary(req, path, codec).await
+        }
         pub async fn list_exercises(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExercisesRequest>,
@@ -182,6 +225,13 @@ pub mod exercises_server {
     /// Generated trait containing gRPC methods that should be implemented for use with ExercisesServer.
     #[async_trait]
     pub trait Exercises: Send + Sync + 'static {
+        async fn list_categories(
+            &self,
+            request: tonic::Request<super::ListCategoriesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCategoriesResponse>,
+            tonic::Status,
+        >;
         async fn list_exercises(
             &self,
             request: tonic::Request<super::ListExercisesRequest>,
@@ -276,6 +326,52 @@ pub mod exercises_server {
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
+                "/exercises.Exercises/ListCategories" => {
+                    #[allow(non_camel_case_types)]
+                    struct ListCategoriesSvc<T: Exercises>(pub Arc<T>);
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::ListCategoriesRequest>
+                    for ListCategoriesSvc<T> {
+                        type Response = super::ListCategoriesResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::ListCategoriesRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                (*inner).list_categories(request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = ListCategoriesSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
                 "/exercises.Exercises/ListExercises" => {
                     #[allow(non_camel_case_types)]
                     struct ListExercisesSvc<T: Exercises>(pub Arc<T>);

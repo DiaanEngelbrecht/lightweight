@@ -1,14 +1,15 @@
+use super::AppError;
 use crate::protos::exercises::exercises_server::Exercises;
 use crate::protos::exercises::{
-    CreateExerciseRequest, CreateExerciseResponse, ListExercisesRequest, ListExercisesResponse,
+    Category, CreateExerciseRequest, CreateExerciseResponse, ListCategoriesRequest,
+    ListCategoriesResponse, ListExercisesRequest, ListExercisesResponse,
 };
 use cali_core::store::get_conn;
 use lightweight_store::repositories::exercises::contract::ExerciseRepositoryContract;
 use lightweight_store::repositories::exercises::implementation::ExerciseRepository;
-use lightweight_store::repositories::exercises::models::Exercise;
+use lightweight_store::repositories::exercises::models::{Exercise, ExerciseCategory};
 use tonic::async_trait;
 use tonic::{Request, Response, Status};
-use super::AppError;
 
 cali_derive::controller!(ExercisesController);
 #[async_trait]
@@ -38,5 +39,27 @@ impl Exercises for ExercisesController {
             result_code: 201,
             message: "Exercise created successfully".to_string(),
         }));
+    }
+
+    async fn list_categories(
+        &self,
+        _request: Request<ListCategoriesRequest>,
+    ) -> Result<Response<ListCategoriesResponse>, Status> {
+        let mut conn = get_conn::<AppError>().await?;
+
+        let categories = ExerciseRepository::list_categories::<_, AppError>(&mut *conn).await?;
+
+        return Ok(tonic::Response::new(ListCategoriesResponse {
+            categories: categories.into_iter().map(|v| v.into()).collect(),
+        }));
+    }
+}
+
+impl From<ExerciseCategory> for Category {
+    fn from(value: ExerciseCategory) -> Self {
+        Self {
+            id: value.id,
+            name: value.name.clone(),
+        }
     }
 }

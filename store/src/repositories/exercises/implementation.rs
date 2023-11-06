@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use cali_core::store::snare::{DBConnection, Ensnared};
 
 use super::contract::ExerciseRepositoryContract;
-use super::models::Exercise;
+use super::models::{Exercise, ExerciseCategory};
 
 pub struct ExerciseRepository {}
 
@@ -15,5 +15,14 @@ impl ExerciseRepositoryContract<sqlx::MySql> for ExerciseRepository {
         let result = exercise.trap("exercises").insert().execute(conn).await?;
 
         Ok(result.last_insert_id() as i64)
+    }
+
+    async fn list_categories<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(
+        conn: C,
+    ) -> Result<Vec<ExerciseCategory>, E> {
+        let exercise_categories = sqlx::query_as::<_, ExerciseCategory>("SELECT * FROM exercise_categories")
+            .fetch_all(conn)
+            .await?;
+        Ok(exercise_categories)
     }
 }
