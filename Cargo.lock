@@ -294,12 +294,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "cali_core"
+version = "0.2.1"
+dependencies = [
+ "log",
+ "log4rs",
+ "regex",
+ "sqlx",
+ "tokio",
+ "tonic",
+ "tower",
+]
+
+[[package]]
 name = "cali_derive"
 version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d08535c235071eb8d12694a0b6dc44c4d369858ac944a1509a4f7f228cd74f0"
 dependencies = [
- "cali_core",
+ "cali_core 0.2.0",
  "convert_case",
  "proc-macro2",
  "quote",
@@ -1045,7 +1056,7 @@ dependencies = [
 name = "lightweight_core"
 version = "0.1.0"
 dependencies = [
- "cali_core",
+ "cali_core 0.2.0",
  "lightweight_store",
 ]
 
@@ -1054,7 +1065,7 @@ name = "lightweight_store"
 version = "0.1.0"
 dependencies = [
  "async-trait",
- "cali_core",
+ "cali_core 0.2.0",
  "cali_derive",
  "chrono",
  "sqlx",
@@ -1066,7 +1077,7 @@ dependencies = [
 name = "lightweight_web"
 version = "0.1.0"
 dependencies = [
- "cali_core",
+ "cali_core 0.2.1",
  "cali_derive",
  "chrono",
  "clap",
