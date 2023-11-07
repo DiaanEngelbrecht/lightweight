@@ -20,9 +20,10 @@ impl ExerciseRepositoryContract<sqlx::MySql> for ExerciseRepository {
     async fn list_categories<'c, C: DBConnection<'c>, E: From<sqlx::Error>>(
         conn: C,
     ) -> Result<Vec<ExerciseCategory>, E> {
-        let exercise_categories = sqlx::query_as::<_, ExerciseCategory>("SELECT * FROM exercise_categories")
-            .fetch_all(conn)
-            .await?;
+        let exercise_categories =
+            sqlx::query_as::<_, ExerciseCategory>("SELECT * FROM exercise_categories")
+                .fetch_all(conn)
+                .await?;
         Ok(exercise_categories)
     }
 }
