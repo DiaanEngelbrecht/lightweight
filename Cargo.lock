@@ -1101,6 +1101,7 @@ dependencies = [
  "tokio",
  "tonic",
  "tonic-build",
+ "tower",
  "url",
 ]
 
