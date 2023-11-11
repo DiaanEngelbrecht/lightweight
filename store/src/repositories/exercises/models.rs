@@ -1,5 +1,5 @@
-use chrono::{NaiveDateTime, Utc};
 use cali_derive::Ensnare;
+use chrono::{NaiveDateTime, Utc};
 use sqlx::FromRow;
 
 #[derive(Clone, Debug, FromRow, Ensnare)]
@@ -36,7 +36,6 @@ impl Exercise {
         }
     }
 }
-
 
 impl ExerciseCategory {
     pub fn new(name: String) -> Self {
