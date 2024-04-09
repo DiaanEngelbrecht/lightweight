@@ -6,3 +6,7 @@ members = [
     "store"
 ]
 resolver = "1"
+
+[patch.crates-io]
+cali_core = { path = "../cali/core" }
+cali_derive = { path = "../cali/derive" }

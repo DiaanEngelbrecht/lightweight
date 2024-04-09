@@ -10,8 +10,8 @@ path = "src/entry/main.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cali_derive = "0.2.0"
-cali_core = "0.2.0"
+cali_derive = { version = "*", path = "../../cali/derive" }
+cali_core = { version = "*", path = "../../cali/core" }
 lightweight_store = { version = "*", path = "../store" }
 lightweight_core = { version = "*", path = "../core" }
 
@@ -19,6 +19,7 @@ rust-argon2 = "1.0"
 thiserror = "1.0"
 tokio = { version = "1.32", features = ["rt-multi-thread", "time", "macros", "signal", "process"] }
 tonic = { version = "0.9.2", features = ["tls", "codegen"] }
+tower = "0.4.13"
 jwt = "0.16.0"
 hmac = "0.12.1"
 sha2 = "0.10.7"
@@ -38,7 +39,7 @@ log = "0.4.17"
 url = "2.4.0"
 
 [build-dependencies]
-cali_derive = "0.2.0"
-cali_core = "0.2.0"
+cali_derive = { version = "*", path = "../../cali/derive" }
+cali_core = { version = "*", path = "../../cali/core" }
 tonic-build = "0.9.2"
 convert_case = "0.5.0"

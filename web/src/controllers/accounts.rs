@@ -4,8 +4,8 @@ use crate::protos::accounts::{
     CreateAccountResponse, LoginRequest, LoginResponse, UpdateAccountDetailsRequest,
     UpdateAccountDetailsResponse,
 };
-use chrono::{DateTime, Duration, Utc};
 use cali_core::store::get_conn;
+use chrono::{DateTime, Duration, Utc};
 use hmac::{Hmac, Mac};
 use jwt::{Claims, RegisteredClaims, SignWithKey};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
