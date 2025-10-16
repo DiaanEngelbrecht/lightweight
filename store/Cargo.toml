@@ -6,11 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cali_core = "0.2.0"
-cali_derive = "0.2.0"
+cali_core = "0.3.0"
+cali_derive = "0.3.0"
 
 tokio = { version = "1.32", features = ["rt-multi-thread", "time", "macros", "signal", "process"] }
 chrono = { version = "0.4", features = ["serde"] }
 async-trait = "0.1"
-sqlx = { version = "0.7.1", default-features = false, features = ["runtime-tokio-native-tls", "mysql", "chrono", "bigdecimal", "macros"] }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-native-tls", "mysql", "chrono", "bigdecimal", "macros"] }
 thiserror = "1.0"

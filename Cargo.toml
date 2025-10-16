@@ -6,3 +6,11 @@ members = [
     "store"
 ]
 resolver = "1"
+
+[patch.crates-io]
+cali_core = { path = "../cali/core" }
+cali_derive = { path = "../cali/derive" }
+cali_cli = { path = "../cali/cli" }
+
+[workspace.dependencies]
+log = "0.4.22"

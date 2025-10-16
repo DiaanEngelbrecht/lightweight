@@ -4,8 +4,8 @@ use crate::protos::accounts::{
     CreateAccountResponse, LoginRequest, LoginResponse, UpdateAccountDetailsRequest,
     UpdateAccountDetailsResponse,
 };
-use chrono::{DateTime, Duration, Utc};
 use cali_core::store::get_conn;
+use chrono::{DateTime, Duration, Utc};
 use hmac::{Hmac, Mac};
 use jwt::{Claims, RegisteredClaims, SignWithKey};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
@@ -38,10 +38,10 @@ impl Accounts for AccountsController {
         let hashed_password = match argon2::hash_encoded(password, &salt, &config) {
             Ok(h) => h,
             Err(e) => {
-                log::error!("Could not generate password hash {}", e);
+                log::error!("Could not generate password hash {e}");
                 return Ok(tonic::Response::new(CreateAccountResponse {
                     success: false,
-                    message: format!("Could not generate password hash {}", e),
+                    message: format!("Could not generate password hash {e}"),
                     result_code: 500,
                 }));
             }
