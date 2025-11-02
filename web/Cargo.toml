@@ -20,6 +20,8 @@ thiserror = "1.0"
 tokio = { version = "1.32", features = ["rt-multi-thread", "time", "macros", "signal", "process"] }
 tonic = { version = "0.12", features = ["tls", "codegen"] }
 tonic-web = "0.12"
+tower-http = { version = "0.5", features = ["cors"] }
+http = "1.0"
 jwt = "0.16.0"
 hmac = "0.12.1"
 sha2 = "0.10.7"

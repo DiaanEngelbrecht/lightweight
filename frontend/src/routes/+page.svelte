@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createPromiseClient } from '@bufbuild/connect-web';
+	import { createPromiseClient } from '@connectrpc/connect';
 	import { Accounts } from '$lib/generated/accounts_connect';
 	import { Exercises } from '$lib/generated/exercises_connect';
 	import { transport } from '$lib/api/client';
@@ -7,7 +7,6 @@
 
 	// Create typed clients from generated code
 	const accountsClient = createPromiseClient(Accounts, transport);
-	const exercisesClient = createPromiseClient(Exercises, transport);
 
 	let name = '';
 	let email = '';
@@ -34,17 +33,6 @@
 			console.error('Failed to create account:', error);
 		}
 	}
-
-	async function fetchCategories() {
-		try {
-			const response = await exercisesClient.listCategories({});
-			console.log('Categories:', response.categories);
-			message = `✅ Found ${response.categories.length} categories`;
-		} catch (error) {
-			message = `❌ Error: ${error}`;
-			console.error('Failed to fetch categories:', error);
-		}
-	}
 </script>
 
 <main>
@@ -58,11 +46,6 @@
 			<input type="password" bind:value={password} placeholder="Password" required />
 			<button type="submit">Create Account</button>
 		</form>
-	</section>
-
-	<section>
-		<h2>Exercise Categories</h2>
-		<button on:click={fetchCategories}>Load Categories</button>
 	</section>
 
 	{#if message}

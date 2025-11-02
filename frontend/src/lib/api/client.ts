@@ -1,8 +1,7 @@
-import { createConnectTransport } from '@bufbuild/connect-web';
+import { createGrpcWebTransport } from '@connectrpc/connect-web';
 
-// Create the transport for communicating with the backend
-// In development, this assumes your gRPC server is running on localhost:50051
-// You'll need tonic-web enabled on the backend for this to work
-export const transport = createConnectTransport({
-	baseUrl: 'http://localhost:50051'
+// Create the transport for communicating with the backend using gRPC-Web protocol
+// tonic-web requires the gRPC-Web protocol, not Connect protocol
+export const transport = createGrpcWebTransport({
+	baseUrl: 'http://localhost:50570'
 });

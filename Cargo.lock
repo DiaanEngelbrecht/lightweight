@@ -1326,6 +1326,7 @@ dependencies = [
  "console-subscriber",
  "convert_case",
  "hmac",
+ "http 1.3.1",
  "jwt",
  "lightweight_core",
  "lightweight_store",
@@ -1345,6 +1346,7 @@ dependencies = [
  "tonic 0.12.3",
  "tonic-build",
  "tonic-web",
+ "tower-http",
  "url",
 ]
 
