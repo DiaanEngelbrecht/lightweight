@@ -1,36 +1,52 @@
 <script lang="ts">
 	import { createPromiseClient } from '@connectrpc/connect';
 	import { Accounts } from '$lib/generated/accounts_connect';
-	import { Exercises } from '$lib/generated/exercises_connect';
 	import { transport } from '$lib/api/client';
-	import type { CreateAccountRequest } from '$lib/generated/accounts_pb';
+	import { LoginRequest } from '$lib/generated/accounts_pb';
+	import { authStore } from '$lib/stores/auth';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
-	// Create typed clients from generated code
 	const accountsClient = createPromiseClient(Accounts, transport);
 
-	let name = '';
 	let email = '';
 	let password = '';
 	let message = '';
+	let isLoading = false;
 
-	async function createAccount() {
+	// Redirect to dashboard if already logged in
+	onMount(() => {
+		if ($authStore.isAuthenticated) {
+			goto('/dashboard');
+		}
+	});
+
+	async function login() {
+		isLoading = true;
+		message = '';
+
 		try {
-			const request: CreateAccountRequest = {
-				name,
+			const request = new LoginRequest({
 				email,
 				password
-			};
+			});
 
-			const response = await accountsClient.createAccount(request);
+			const response = await accountsClient.login(request);
 
-			if (response.success) {
+			if (response.success && response.authToken) {
 				message = `✅ ${response.message}`;
+
+				// Store token and redirect to dashboard
+				authStore.login(response.authToken, { email });
+				goto('/dashboard');
 			} else {
-				message = `❌ ${response.message}`;
+				message = `❌ ${response.message || 'Login failed'}`;
+				isLoading = false;
 			}
 		} catch (error) {
 			message = `❌ Error: ${error}`;
-			console.error('Failed to create account:', error);
+			console.error('Failed to login:', error);
+			isLoading = false;
 		}
 	}
 </script>
@@ -39,13 +55,18 @@
 	<h1>Lightweight Fitness Tracker</h1>
 
 	<section>
-		<h2>Create Account</h2>
-		<form on:submit|preventDefault={createAccount}>
-			<input type="text" bind:value={name} placeholder="Name" required />
-			<input type="email" bind:value={email} placeholder="Email" required />
-			<input type="password" bind:value={password} placeholder="Password" required />
-			<button type="submit">Create Account</button>
+		<h2>Login</h2>
+		<form on:submit|preventDefault={login}>
+			<input type="email" bind:value={email} placeholder="Email" required disabled={isLoading} />
+			<input type="password" bind:value={password} placeholder="Password" required disabled={isLoading} />
+			<button type="submit" disabled={isLoading}>
+				{isLoading ? 'Logging in...' : 'Login'}
+			</button>
 		</form>
+
+		<p class="link-text">
+			Don't have an account? <a href="/signup">Sign up</a>
+		</p>
 	</section>
 
 	{#if message}
@@ -91,8 +112,18 @@
 		cursor: pointer;
 	}
 
-	button:hover {
+	button:hover:not(:disabled) {
 		background: #0056b3;
+	}
+
+	button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	input:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
 	}
 
 	.message {
@@ -100,5 +131,20 @@
 		padding: 1rem;
 		background: #f8f9fa;
 		border-radius: 4px;
+	}
+
+	.link-text {
+		margin-top: 1rem;
+		text-align: center;
+		color: #666;
+	}
+
+	.link-text a {
+		color: #007bff;
+		text-decoration: none;
+	}
+
+	.link-text a:hover {
+		text-decoration: underline;
 	}
 </style>

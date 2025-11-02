@@ -67,6 +67,7 @@ impl Accounts for AccountsController {
         &self,
         request: Request<LoginRequest>,
     ) -> Result<Response<LoginResponse>, Status> {
+        log::info!("Getting login request");
         let req_data = request.into_inner();
 
         let mut conn = get_conn::<AppError>().await?;
