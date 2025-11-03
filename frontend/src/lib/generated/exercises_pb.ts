@@ -7,6 +7,8 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
 
 /**
+ * Category messages
+ *
  * @generated from message exercises.ListCategoriesRequest
  */
 export class ListCategoriesRequest extends Message<ListCategoriesRequest> {
@@ -81,23 +83,334 @@ export class ListCategoriesResponse extends Message<ListCategoriesResponse> {
 }
 
 /**
- * @generated from message exercises.ListExercisesRequest
+ * @generated from message exercises.CreateCategoryRequest
  */
-export class ListExercisesRequest extends Message<ListExercisesRequest> {
+export class CreateCategoryRequest extends Message<CreateCategoryRequest> {
   /**
    * @generated from field: string name = 1;
    */
   name = "";
 
+  constructor(data?: PartialMessage<CreateCategoryRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.CreateCategoryRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateCategoryRequest {
+    return new CreateCategoryRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateCategoryRequest {
+    return new CreateCategoryRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateCategoryRequest {
+    return new CreateCategoryRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CreateCategoryRequest | PlainMessage<CreateCategoryRequest> | undefined, b: CreateCategoryRequest | PlainMessage<CreateCategoryRequest> | undefined): boolean {
+    return proto3.util.equals(CreateCategoryRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.CreateCategoryResponse
+ */
+export class CreateCategoryResponse extends Message<CreateCategoryResponse> {
   /**
-   * @generated from field: string email = 2;
+   * @generated from field: bool success = 1;
    */
-  email = "";
+  success = false;
 
   /**
-   * @generated from field: string password = 3;
+   * @generated from field: int32 result_code = 2;
    */
-  password = "";
+  resultCode = 0;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message = "";
+
+  /**
+   * @generated from field: int64 category_id = 4;
+   */
+  categoryId = protoInt64.zero;
+
+  constructor(data?: PartialMessage<CreateCategoryResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.CreateCategoryResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "result_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "category_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateCategoryResponse {
+    return new CreateCategoryResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateCategoryResponse {
+    return new CreateCategoryResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateCategoryResponse {
+    return new CreateCategoryResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CreateCategoryResponse | PlainMessage<CreateCategoryResponse> | undefined, b: CreateCategoryResponse | PlainMessage<CreateCategoryResponse> | undefined): boolean {
+    return proto3.util.equals(CreateCategoryResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.UpdateCategoryRequest
+ */
+export class UpdateCategoryRequest extends Message<UpdateCategoryRequest> {
+  /**
+   * @generated from field: int64 category_id = 1;
+   */
+  categoryId = protoInt64.zero;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  constructor(data?: PartialMessage<UpdateCategoryRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.UpdateCategoryRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateCategoryRequest {
+    return new UpdateCategoryRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateCategoryRequest {
+    return new UpdateCategoryRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateCategoryRequest {
+    return new UpdateCategoryRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateCategoryRequest | PlainMessage<UpdateCategoryRequest> | undefined, b: UpdateCategoryRequest | PlainMessage<UpdateCategoryRequest> | undefined): boolean {
+    return proto3.util.equals(UpdateCategoryRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.UpdateCategoryResponse
+ */
+export class UpdateCategoryResponse extends Message<UpdateCategoryResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * @generated from field: int32 result_code = 2;
+   */
+  resultCode = 0;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message = "";
+
+  constructor(data?: PartialMessage<UpdateCategoryResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.UpdateCategoryResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "result_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateCategoryResponse {
+    return new UpdateCategoryResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateCategoryResponse {
+    return new UpdateCategoryResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateCategoryResponse {
+    return new UpdateCategoryResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateCategoryResponse | PlainMessage<UpdateCategoryResponse> | undefined, b: UpdateCategoryResponse | PlainMessage<UpdateCategoryResponse> | undefined): boolean {
+    return proto3.util.equals(UpdateCategoryResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.DeleteCategoryRequest
+ */
+export class DeleteCategoryRequest extends Message<DeleteCategoryRequest> {
+  /**
+   * @generated from field: int64 category_id = 1;
+   */
+  categoryId = protoInt64.zero;
+
+  constructor(data?: PartialMessage<DeleteCategoryRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.DeleteCategoryRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteCategoryRequest {
+    return new DeleteCategoryRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteCategoryRequest {
+    return new DeleteCategoryRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteCategoryRequest {
+    return new DeleteCategoryRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteCategoryRequest | PlainMessage<DeleteCategoryRequest> | undefined, b: DeleteCategoryRequest | PlainMessage<DeleteCategoryRequest> | undefined): boolean {
+    return proto3.util.equals(DeleteCategoryRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.DeleteCategoryResponse
+ */
+export class DeleteCategoryResponse extends Message<DeleteCategoryResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * @generated from field: int32 result_code = 2;
+   */
+  resultCode = 0;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message = "";
+
+  constructor(data?: PartialMessage<DeleteCategoryResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.DeleteCategoryResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "result_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteCategoryResponse {
+    return new DeleteCategoryResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteCategoryResponse {
+    return new DeleteCategoryResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteCategoryResponse {
+    return new DeleteCategoryResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteCategoryResponse | PlainMessage<DeleteCategoryResponse> | undefined, b: DeleteCategoryResponse | PlainMessage<DeleteCategoryResponse> | undefined): boolean {
+    return proto3.util.equals(DeleteCategoryResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.Category
+ */
+export class Category extends Message<Category> {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id = protoInt64.zero;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: int64 created_by = 3;
+   */
+  createdBy = protoInt64.zero;
+
+  constructor(data?: PartialMessage<Category>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.Category";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "created_by", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Category {
+    return new Category().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Category {
+    return new Category().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Category {
+    return new Category().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Category | PlainMessage<Category> | undefined, b: Category | PlainMessage<Category> | undefined): boolean {
+    return proto3.util.equals(Category, a, b);
+  }
+}
+
+/**
+ * Exercise messages
+ *
+ * @generated from message exercises.ListExercisesRequest
+ */
+export class ListExercisesRequest extends Message<ListExercisesRequest> {
+  /**
+   * @generated from field: int64 category_id = 1;
+   */
+  categoryId = protoInt64.zero;
 
   constructor(data?: PartialMessage<ListExercisesRequest>) {
     super();
@@ -107,9 +420,7 @@ export class ListExercisesRequest extends Message<ListExercisesRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "exercises.ListExercisesRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "category_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListExercisesRequest {
@@ -134,19 +445,9 @@ export class ListExercisesRequest extends Message<ListExercisesRequest> {
  */
 export class ListExercisesResponse extends Message<ListExercisesResponse> {
   /**
-   * @generated from field: bool success = 1;
+   * @generated from field: repeated exercises.Exercise exercises = 1;
    */
-  success = false;
-
-  /**
-   * @generated from field: int32 result_code = 2;
-   */
-  resultCode = 0;
-
-  /**
-   * @generated from field: string message = 3;
-   */
-  message = "";
+  exercises: Exercise[] = [];
 
   constructor(data?: PartialMessage<ListExercisesResponse>) {
     super();
@@ -156,9 +457,7 @@ export class ListExercisesResponse extends Message<ListExercisesResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "exercises.ListExercisesResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 2, name: "result_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "exercises", kind: "message", T: Exercise, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListExercisesResponse {
@@ -240,6 +539,11 @@ export class CreateExerciseResponse extends Message<CreateExerciseResponse> {
    */
   message = "";
 
+  /**
+   * @generated from field: int64 exercise_id = 4;
+   */
+  exerciseId = protoInt64.zero;
+
   constructor(data?: PartialMessage<CreateExerciseResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -251,6 +555,7 @@ export class CreateExerciseResponse extends Message<CreateExerciseResponse> {
     { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "result_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "exercise_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateExerciseResponse {
@@ -271,9 +576,187 @@ export class CreateExerciseResponse extends Message<CreateExerciseResponse> {
 }
 
 /**
- * @generated from message exercises.Category
+ * @generated from message exercises.UpdateExerciseRequest
  */
-export class Category extends Message<Category> {
+export class UpdateExerciseRequest extends Message<UpdateExerciseRequest> {
+  /**
+   * @generated from field: int64 exercise_id = 1;
+   */
+  exerciseId = protoInt64.zero;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  constructor(data?: PartialMessage<UpdateExerciseRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.UpdateExerciseRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "exercise_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateExerciseRequest {
+    return new UpdateExerciseRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateExerciseRequest {
+    return new UpdateExerciseRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateExerciseRequest {
+    return new UpdateExerciseRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateExerciseRequest | PlainMessage<UpdateExerciseRequest> | undefined, b: UpdateExerciseRequest | PlainMessage<UpdateExerciseRequest> | undefined): boolean {
+    return proto3.util.equals(UpdateExerciseRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.UpdateExerciseResponse
+ */
+export class UpdateExerciseResponse extends Message<UpdateExerciseResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * @generated from field: int32 result_code = 2;
+   */
+  resultCode = 0;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message = "";
+
+  constructor(data?: PartialMessage<UpdateExerciseResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.UpdateExerciseResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "result_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateExerciseResponse {
+    return new UpdateExerciseResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateExerciseResponse {
+    return new UpdateExerciseResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateExerciseResponse {
+    return new UpdateExerciseResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateExerciseResponse | PlainMessage<UpdateExerciseResponse> | undefined, b: UpdateExerciseResponse | PlainMessage<UpdateExerciseResponse> | undefined): boolean {
+    return proto3.util.equals(UpdateExerciseResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.DeleteExerciseRequest
+ */
+export class DeleteExerciseRequest extends Message<DeleteExerciseRequest> {
+  /**
+   * @generated from field: int64 exercise_id = 1;
+   */
+  exerciseId = protoInt64.zero;
+
+  constructor(data?: PartialMessage<DeleteExerciseRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.DeleteExerciseRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "exercise_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteExerciseRequest {
+    return new DeleteExerciseRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteExerciseRequest {
+    return new DeleteExerciseRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteExerciseRequest {
+    return new DeleteExerciseRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteExerciseRequest | PlainMessage<DeleteExerciseRequest> | undefined, b: DeleteExerciseRequest | PlainMessage<DeleteExerciseRequest> | undefined): boolean {
+    return proto3.util.equals(DeleteExerciseRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.DeleteExerciseResponse
+ */
+export class DeleteExerciseResponse extends Message<DeleteExerciseResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * @generated from field: int32 result_code = 2;
+   */
+  resultCode = 0;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message = "";
+
+  constructor(data?: PartialMessage<DeleteExerciseResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "exercises.DeleteExerciseResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "result_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteExerciseResponse {
+    return new DeleteExerciseResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteExerciseResponse {
+    return new DeleteExerciseResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteExerciseResponse {
+    return new DeleteExerciseResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteExerciseResponse | PlainMessage<DeleteExerciseResponse> | undefined, b: DeleteExerciseResponse | PlainMessage<DeleteExerciseResponse> | undefined): boolean {
+    return proto3.util.equals(DeleteExerciseResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message exercises.Exercise
+ */
+export class Exercise extends Message<Exercise> {
   /**
    * @generated from field: int64 id = 1;
    */
@@ -284,32 +767,44 @@ export class Category extends Message<Category> {
    */
   name = "";
 
-  constructor(data?: PartialMessage<Category>) {
+  /**
+   * @generated from field: int64 category_id = 3;
+   */
+  categoryId = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 created_by = 4;
+   */
+  createdBy = protoInt64.zero;
+
+  constructor(data?: PartialMessage<Exercise>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "exercises.Category";
+  static readonly typeName = "exercises.Exercise";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "category_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 4, name: "created_by", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Category {
-    return new Category().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Exercise {
+    return new Exercise().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Category {
-    return new Category().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Exercise {
+    return new Exercise().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Category {
-    return new Category().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Exercise {
+    return new Exercise().fromJsonString(jsonString, options);
   }
 
-  static equals(a: Category | PlainMessage<Category> | undefined, b: Category | PlainMessage<Category> | undefined): boolean {
-    return proto3.util.equals(Category, a, b);
+  static equals(a: Exercise | PlainMessage<Exercise> | undefined, b: Exercise | PlainMessage<Exercise> | undefined): boolean {
+    return proto3.util.equals(Exercise, a, b);
   }
 }
 

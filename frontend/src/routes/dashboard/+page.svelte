@@ -16,6 +16,13 @@
 		<h2>Hello{$authStore.user?.name ? `, ${$authStore.user.name}` : ''}!</h2>
 		<p>Welcome to your fitness tracker.</p>
 	</section>
+
+	<section class="actions">
+		<a href="/exercises" class="action-btn">
+			<span class="icon">💪</span>
+			<span class="label">Manage Exercises</span>
+		</a>
+	</section>
 </main>
 
 <style>
@@ -73,5 +80,44 @@
 		margin: 0;
 		font-size: 1.1rem;
 		color: #666;
+	}
+
+	.actions {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.action-btn {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+		background: white;
+		border: 2px solid #007bff;
+		border-radius: 8px;
+		text-decoration: none;
+		color: #007bff;
+		transition: all 0.2s;
+		cursor: pointer;
+	}
+
+	.action-btn:hover {
+		background: #007bff;
+		color: white;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.action-btn .icon {
+		font-size: 3rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.action-btn .label {
+		font-size: 1.1rem;
+		font-weight: 600;
 	}
 </style>

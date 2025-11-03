@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateExerciseRequest, CreateExerciseResponse, ListCategoriesRequest, ListCategoriesResponse, ListExercisesRequest, ListExercisesResponse } from "./exercises_pb.js";
+import { CreateCategoryRequest, CreateCategoryResponse, CreateExerciseRequest, CreateExerciseResponse, DeleteCategoryRequest, DeleteCategoryResponse, DeleteExerciseRequest, DeleteExerciseResponse, ListCategoriesRequest, ListCategoriesResponse, ListExercisesRequest, ListExercisesResponse, UpdateCategoryRequest, UpdateCategoryResponse, UpdateExerciseRequest, UpdateExerciseResponse } from "./exercises_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -22,6 +22,33 @@ export const Exercises = {
       kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc exercises.Exercises.CreateCategory
+     */
+    createCategory: {
+      name: "CreateCategory",
+      I: CreateCategoryRequest,
+      O: CreateCategoryResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc exercises.Exercises.UpdateCategory
+     */
+    updateCategory: {
+      name: "UpdateCategory",
+      I: UpdateCategoryRequest,
+      O: UpdateCategoryResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc exercises.Exercises.DeleteCategory
+     */
+    deleteCategory: {
+      name: "DeleteCategory",
+      I: DeleteCategoryRequest,
+      O: DeleteCategoryResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc exercises.Exercises.ListExercises
      */
     listExercises: {
@@ -37,6 +64,24 @@ export const Exercises = {
       name: "CreateExercise",
       I: CreateExerciseRequest,
       O: CreateExerciseResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc exercises.Exercises.UpdateExercise
+     */
+    updateExercise: {
+      name: "UpdateExercise",
+      I: UpdateExerciseRequest,
+      O: UpdateExerciseResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc exercises.Exercises.DeleteExercise
+     */
+    deleteExercise: {
+      name: "DeleteExercise",
+      I: DeleteExerciseRequest,
+      O: DeleteExerciseResponse,
       kind: MethodKind.Unary,
     },
   }

@@ -4,10 +4,17 @@ option go_package = "/apis/lightweight/services";
 
 service Exercises {
   rpc ListCategories (ListCategoriesRequest) returns (ListCategoriesResponse);
+  rpc CreateCategory (CreateCategoryRequest) returns (CreateCategoryResponse);
+  rpc UpdateCategory (UpdateCategoryRequest) returns (UpdateCategoryResponse);
+  rpc DeleteCategory (DeleteCategoryRequest) returns (DeleteCategoryResponse);
+
   rpc ListExercises (ListExercisesRequest) returns (ListExercisesResponse);
   rpc CreateExercise (CreateExerciseRequest) returns (CreateExerciseResponse);
+  rpc UpdateExercise (UpdateExerciseRequest) returns (UpdateExerciseResponse);
+  rpc DeleteExercise (DeleteExerciseRequest) returns (DeleteExerciseResponse);
 }
 
+// Category messages
 message ListCategoriesRequest {
   string filter = 1;
 }
@@ -16,16 +23,51 @@ message ListCategoriesResponse {
   repeated Category categories = 1;
 }
 
-message ListExercisesRequest {
+message CreateCategoryRequest {
   string name = 1;
-  string email = 2;
-  string password = 3;
 }
 
-message ListExercisesResponse {
+message CreateCategoryResponse {
   bool success = 1;
   int32 result_code = 2;
   string message = 3;
+  int64 category_id = 4;
+}
+
+message UpdateCategoryRequest {
+  int64 category_id = 1;
+  string name = 2;
+}
+
+message UpdateCategoryResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message DeleteCategoryRequest {
+  int64 category_id = 1;
+}
+
+message DeleteCategoryResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message Category {
+  int64 id = 1;
+  string name = 2;
+  int64 created_by = 3;
+}
+
+// Exercise messages
+message ListExercisesRequest {
+  int64 category_id = 1;
+}
+
+message ListExercisesResponse {
+  repeated Exercise exercises = 1;
 }
 
 message CreateExerciseRequest {
@@ -37,9 +79,33 @@ message CreateExerciseResponse {
   bool success = 1;
   int32 result_code = 2;
   string message = 3;
+  int64 exercise_id = 4;
 }
 
-message Category {
+message UpdateExerciseRequest {
+  int64 exercise_id = 1;
+  string name = 2;
+}
+
+message UpdateExerciseResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message DeleteExerciseRequest {
+  int64 exercise_id = 1;
+}
+
+message DeleteExerciseResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message Exercise {
   int64 id = 1;
   string name = 2;
+  int64 category_id = 3;
+  int64 created_by = 4;
 }

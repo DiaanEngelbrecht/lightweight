@@ -1,3 +1,4 @@
+use crate::auth::AuthClaims;
 use crate::config::Config;
 use crate::protos::accounts::{
     accounts_server::Accounts, AccountDetailsRequest, AccountDetailsResponse, CreateAccountRequest,
@@ -7,7 +8,7 @@ use crate::protos::accounts::{
 use cali_core::store::get_conn;
 use chrono::{DateTime, Duration, Utc};
 use hmac::{Hmac, Mac};
-use jwt::{Claims, RegisteredClaims, SignWithKey};
+use jwt::{RegisteredClaims, SignWithKey};
 use lightweight_store::repositories::accounts::contract::AccountsRepositoryContract;
 use lightweight_store::repositories::accounts::implementation::AccountsRepository;
 use lightweight_store::repositories::accounts::models::Account;
@@ -71,13 +72,16 @@ impl Accounts for AccountsController {
         let req_data = request.into_inner();
 
         let mut conn = get_conn::<AppError>().await?;
-        let login_result: Result<&str, &str> = if let Some(account) =
-            AccountsRepository::get_account::<_, AppError>(&mut *conn, req_data.email).await?
+
+        // Try to get account and verify password
+        let login_result: Result<Account, &str> = if let Some(account) =
+            AccountsRepository::get_account::<_, AppError>(&mut *conn, req_data.email.clone())
+                .await?
         {
             if Ok(true)
                 == argon2::verify_encoded(&account.password_hash, req_data.password.as_bytes())
             {
-                Ok("Login successfull!")
+                Ok(account)
             } else {
                 Err("Login failed, invalid credentials.")
             }
@@ -86,24 +90,30 @@ impl Accounts for AccountsController {
         };
 
         match login_result {
-            Ok(message) => {
-                // Generate the jwt
+            Ok(account) => {
+                // Generate JWT with user_id and email
                 let utc: DateTime<Utc> = Utc::now() + Duration::minutes(5);
-                // let key = get_config::<Config>().jwt_secret.clone();
                 let config = cali_core::helpers::get_context(|config: &Config| config.clone());
                 let key = config.jwt_secret.clone();
                 let key: Hmac<Sha256> = Hmac::new_from_slice(key.as_bytes()).unwrap();
 
-                let claims = Claims::new(RegisteredClaims {
-                    issuer: None,
-                    subject: None,
-                    audience: None,
-                    expiration: Some(utc.timestamp() as u64),
-                    not_before: Some(utc.timestamp() as u64),
-                    issued_at: Some(utc.timestamp() as u64),
-                    json_web_token_id: None,
-                });
-                let token_str = claims
+                // Create custom claims with user identification
+                let auth_claims = AuthClaims {
+                    user_id: account.id,
+                    email: account.email.clone(),
+                    registered: RegisteredClaims {
+                        issuer: None,
+                        subject: None,
+                        audience: None,
+                        expiration: Some(utc.timestamp() as u64),
+                        not_before: Some(Utc::now().timestamp() as u64),
+                        issued_at: Some(Utc::now().timestamp() as u64),
+                        json_web_token_id: None,
+                    },
+                };
+
+                // Sign the claims directly
+                let token_str = auth_claims
                     .sign_with_key(&key)
                     .expect("Should have been able to sign");
 
@@ -111,12 +121,12 @@ impl Accounts for AccountsController {
                     success: true,
                     auth_token: token_str.to_string(),
                     result_code: 200,
-                    message: message.to_string(),
+                    message: "Login successful!".to_string(),
                 }));
             }
             Err(message) => {
                 return Ok(tonic::Response::new(LoginResponse {
-                    success: true,
+                    success: false,
                     auth_token: "".to_string(),
                     message: message.to_string(),
                     result_code: 403,

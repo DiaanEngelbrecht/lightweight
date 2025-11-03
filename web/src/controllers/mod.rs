@@ -6,7 +6,11 @@ pub mod exercises;
 
 impl From<AppError> for Status {
     fn from(err: AppError) -> Self {
-        Self::internal(format!("Error: {}", err))
+        match err {
+            AppError::DatabaseError(msg) => Self::internal(format!("Database error: {}", msg)),
+            AppError::Unauthorized(msg) => Self::unauthenticated(msg),
+            AppError::Forbidden(msg) => Self::permission_denied(msg),
+        }
     }
 }
 
@@ -14,6 +18,12 @@ impl From<AppError> for Status {
 pub enum AppError {
     #[error("database error - {0}")]
     DatabaseError(String),
+
+    #[error("unauthorized - {0}")]
+    Unauthorized(String),
+
+    #[error("forbidden - {0}")]
+    Forbidden(String),
 }
 
 impl From<sqlx::Error> for AppError {
