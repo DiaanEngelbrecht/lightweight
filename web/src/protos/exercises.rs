@@ -142,10 +142,10 @@ pub mod exercises_client {
         dead_code,
         missing_docs,
         clippy::wildcard_imports,
-        clippy::let_unit_value
+        clippy::let_unit_value,
     )]
-    use tonic::codegen::http::Uri;
     use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
     pub struct ExercisesClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -189,8 +189,9 @@ pub mod exercises_client {
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + std::marker::Send + std::marker::Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ExercisesClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -228,13 +229,22 @@ pub mod exercises_client {
         pub async fn list_categories(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCategoriesRequest>,
-        ) -> std::result::Result<tonic::Response<super::ListCategoriesResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::ListCategoriesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/ListCategories");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/ListCategories",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "ListCategories"));
@@ -243,13 +253,22 @@ pub mod exercises_client {
         pub async fn create_category(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCategoryRequest>,
-        ) -> std::result::Result<tonic::Response<super::CreateCategoryResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::CreateCategoryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/CreateCategory");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/CreateCategory",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "CreateCategory"));
@@ -258,13 +277,22 @@ pub mod exercises_client {
         pub async fn update_category(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCategoryRequest>,
-        ) -> std::result::Result<tonic::Response<super::UpdateCategoryResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateCategoryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/UpdateCategory");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/UpdateCategory",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "UpdateCategory"));
@@ -273,13 +301,22 @@ pub mod exercises_client {
         pub async fn delete_category(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCategoryRequest>,
-        ) -> std::result::Result<tonic::Response<super::DeleteCategoryResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteCategoryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/DeleteCategory");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/DeleteCategory",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "DeleteCategory"));
@@ -288,13 +325,22 @@ pub mod exercises_client {
         pub async fn list_exercises(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExercisesRequest>,
-        ) -> std::result::Result<tonic::Response<super::ListExercisesResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::ListExercisesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/ListExercises");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/ListExercises",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "ListExercises"));
@@ -303,13 +349,22 @@ pub mod exercises_client {
         pub async fn create_exercise(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateExerciseRequest>,
-        ) -> std::result::Result<tonic::Response<super::CreateExerciseResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::CreateExerciseResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/CreateExercise");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/CreateExercise",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "CreateExercise"));
@@ -318,13 +373,22 @@ pub mod exercises_client {
         pub async fn update_exercise(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateExerciseRequest>,
-        ) -> std::result::Result<tonic::Response<super::UpdateExerciseResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateExerciseResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/UpdateExercise");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/UpdateExercise",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "UpdateExercise"));
@@ -333,13 +397,22 @@ pub mod exercises_client {
         pub async fn delete_exercise(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteExerciseRequest>,
-        ) -> std::result::Result<tonic::Response<super::DeleteExerciseResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteExerciseResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/exercises.Exercises/DeleteExercise");
+            let path = http::uri::PathAndQuery::from_static(
+                "/exercises.Exercises/DeleteExercise",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("exercises.Exercises", "DeleteExercise"));
@@ -354,7 +427,7 @@ pub mod exercises_server {
         dead_code,
         missing_docs,
         clippy::wildcard_imports,
-        clippy::let_unit_value
+        clippy::let_unit_value,
     )]
     use tonic::codegen::*;
     /// Generated trait containing gRPC methods that should be implemented for use with ExercisesServer.
@@ -363,35 +436,59 @@ pub mod exercises_server {
         async fn list_categories(
             &self,
             request: tonic::Request<super::ListCategoriesRequest>,
-        ) -> std::result::Result<tonic::Response<super::ListCategoriesResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::ListCategoriesResponse>,
+            tonic::Status,
+        >;
         async fn create_category(
             &self,
             request: tonic::Request<super::CreateCategoryRequest>,
-        ) -> std::result::Result<tonic::Response<super::CreateCategoryResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::CreateCategoryResponse>,
+            tonic::Status,
+        >;
         async fn update_category(
             &self,
             request: tonic::Request<super::UpdateCategoryRequest>,
-        ) -> std::result::Result<tonic::Response<super::UpdateCategoryResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateCategoryResponse>,
+            tonic::Status,
+        >;
         async fn delete_category(
             &self,
             request: tonic::Request<super::DeleteCategoryRequest>,
-        ) -> std::result::Result<tonic::Response<super::DeleteCategoryResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteCategoryResponse>,
+            tonic::Status,
+        >;
         async fn list_exercises(
             &self,
             request: tonic::Request<super::ListExercisesRequest>,
-        ) -> std::result::Result<tonic::Response<super::ListExercisesResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::ListExercisesResponse>,
+            tonic::Status,
+        >;
         async fn create_exercise(
             &self,
             request: tonic::Request<super::CreateExerciseRequest>,
-        ) -> std::result::Result<tonic::Response<super::CreateExerciseResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::CreateExerciseResponse>,
+            tonic::Status,
+        >;
         async fn update_exercise(
             &self,
             request: tonic::Request<super::UpdateExerciseRequest>,
-        ) -> std::result::Result<tonic::Response<super::UpdateExerciseResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateExerciseResponse>,
+            tonic::Status,
+        >;
         async fn delete_exercise(
             &self,
             request: tonic::Request<super::DeleteExerciseRequest>,
-        ) -> std::result::Result<tonic::Response<super::DeleteExerciseResponse>, tonic::Status>;
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteExerciseResponse>,
+            tonic::Status,
+        >;
     }
     #[derive(Debug)]
     pub struct ExercisesServer<T> {
@@ -414,7 +511,10 @@ pub mod exercises_server {
                 max_encoding_message_size: None,
             }
         }
-        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -469,11 +569,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/ListCategories" => {
                     #[allow(non_camel_case_types)]
                     struct ListCategoriesSvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::ListCategoriesRequest>
-                        for ListCategoriesSvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::ListCategoriesRequest>
+                    for ListCategoriesSvc<T> {
                         type Response = super::ListCategoriesResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::ListCategoriesRequest>,
@@ -510,11 +614,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/CreateCategory" => {
                     #[allow(non_camel_case_types)]
                     struct CreateCategorySvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::CreateCategoryRequest>
-                        for CreateCategorySvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::CreateCategoryRequest>
+                    for CreateCategorySvc<T> {
                         type Response = super::CreateCategoryResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::CreateCategoryRequest>,
@@ -551,11 +659,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/UpdateCategory" => {
                     #[allow(non_camel_case_types)]
                     struct UpdateCategorySvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::UpdateCategoryRequest>
-                        for UpdateCategorySvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::UpdateCategoryRequest>
+                    for UpdateCategorySvc<T> {
                         type Response = super::UpdateCategoryResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::UpdateCategoryRequest>,
@@ -592,11 +704,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/DeleteCategory" => {
                     #[allow(non_camel_case_types)]
                     struct DeleteCategorySvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::DeleteCategoryRequest>
-                        for DeleteCategorySvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::DeleteCategoryRequest>
+                    for DeleteCategorySvc<T> {
                         type Response = super::DeleteCategoryResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::DeleteCategoryRequest>,
@@ -633,11 +749,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/ListExercises" => {
                     #[allow(non_camel_case_types)]
                     struct ListExercisesSvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::ListExercisesRequest>
-                        for ListExercisesSvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::ListExercisesRequest>
+                    for ListExercisesSvc<T> {
                         type Response = super::ListExercisesResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::ListExercisesRequest>,
@@ -674,11 +794,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/CreateExercise" => {
                     #[allow(non_camel_case_types)]
                     struct CreateExerciseSvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::CreateExerciseRequest>
-                        for CreateExerciseSvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::CreateExerciseRequest>
+                    for CreateExerciseSvc<T> {
                         type Response = super::CreateExerciseResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::CreateExerciseRequest>,
@@ -715,11 +839,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/UpdateExercise" => {
                     #[allow(non_camel_case_types)]
                     struct UpdateExerciseSvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::UpdateExerciseRequest>
-                        for UpdateExerciseSvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::UpdateExerciseRequest>
+                    for UpdateExerciseSvc<T> {
                         type Response = super::UpdateExerciseResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::UpdateExerciseRequest>,
@@ -756,11 +884,15 @@ pub mod exercises_server {
                 "/exercises.Exercises/DeleteExercise" => {
                     #[allow(non_camel_case_types)]
                     struct DeleteExerciseSvc<T: Exercises>(pub Arc<T>);
-                    impl<T: Exercises> tonic::server::UnaryService<super::DeleteExerciseRequest>
-                        for DeleteExerciseSvc<T>
-                    {
+                    impl<
+                        T: Exercises,
+                    > tonic::server::UnaryService<super::DeleteExerciseRequest>
+                    for DeleteExerciseSvc<T> {
                         type Response = super::DeleteExerciseResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::DeleteExerciseRequest>,
@@ -794,19 +926,23 @@ pub mod exercises_server {
                     };
                     Box::pin(fut)
                 }
-                _ => Box::pin(async move {
-                    let mut response = http::Response::new(empty_body());
-                    let headers = response.headers_mut();
-                    headers.insert(
-                        tonic::Status::GRPC_STATUS,
-                        (tonic::Code::Unimplemented as i32).into(),
-                    );
-                    headers.insert(
-                        http::header::CONTENT_TYPE,
-                        tonic::metadata::GRPC_CONTENT_TYPE,
-                    );
-                    Ok(response)
-                }),
+                _ => {
+                    Box::pin(async move {
+                        let mut response = http::Response::new(empty_body());
+                        let headers = response.headers_mut();
+                        headers
+                            .insert(
+                                tonic::Status::GRPC_STATUS,
+                                (tonic::Code::Unimplemented as i32).into(),
+                            );
+                        headers
+                            .insert(
+                                http::header::CONTENT_TYPE,
+                                tonic::metadata::GRPC_CONTENT_TYPE,
+                            );
+                        Ok(response)
+                    })
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ use tonic::Status;
 
 pub mod accounts;
 pub mod exercises;
+pub mod workouts;
 
 impl From<AppError> for Status {
     fn from(err: AppError) -> Self {

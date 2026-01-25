@@ -1,8 +1,51 @@
 <script lang="ts">
 	import { authStore } from '$lib/stores/auth';
+	import { createPromiseClient } from '@connectrpc/connect';
+	import { Workouts } from '$lib/generated/workouts_connect';
+	import { transport } from '$lib/api/client';
+	import { GetTodaysWorkoutRequest, CreateWorkoutRequest } from '$lib/generated/workouts_pb';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+
+	const workoutsClient = createPromiseClient(Workouts, transport);
+
+	let isStartingWorkout = false;
+	let workoutError = '';
 
 	function handleLogout() {
 		authStore.logout();
+	}
+
+	async function startWorkout() {
+		isStartingWorkout = true;
+		workoutError = '';
+
+		try {
+			// Check if there's already a workout for today
+			const todayResponse = await workoutsClient.getTodaysWorkout(new GetTodaysWorkoutRequest());
+
+			if (todayResponse.hasWorkout && todayResponse.workout) {
+				// Navigate to existing workout
+				goto(`/workouts/${todayResponse.workout.id}`);
+			} else {
+				// Create new workout for today
+				const today = new Date().toISOString().split('T')[0];
+				const createResponse = await workoutsClient.createWorkout(
+					new CreateWorkoutRequest({ workoutDate: today, notes: '' })
+				);
+
+				if (createResponse.success) {
+					goto(`/workouts/${createResponse.workoutId}`);
+				} else {
+					workoutError = createResponse.message;
+				}
+			}
+		} catch (e) {
+			console.error('Failed to start workout:', e);
+			workoutError = `Failed to start workout: ${e}`;
+		} finally {
+			isStartingWorkout = false;
+		}
 	}
 </script>
 
@@ -17,7 +60,19 @@
 		<p>Welcome to your fitness tracker.</p>
 	</section>
 
+	{#if workoutError}
+		<div class="error">{workoutError}</div>
+	{/if}
+
 	<section class="actions">
+		<button class="action-btn primary" on:click={startWorkout} disabled={isStartingWorkout}>
+			<span class="icon">🏋️</span>
+			<span class="label">{isStartingWorkout ? 'Starting...' : 'Start Workout'}</span>
+		</button>
+		<a href="/workouts" class="action-btn">
+			<span class="icon">📋</span>
+			<span class="label">Workout History</span>
+		</a>
 		<a href="/exercises" class="action-btn">
 			<span class="icon">💪</span>
 			<span class="label">Manage Exercises</span>
@@ -119,5 +174,32 @@
 	.action-btn .label {
 		font-size: 1.1rem;
 		font-weight: 600;
+	}
+
+	.action-btn.primary {
+		background: #28a745;
+		border-color: #28a745;
+		color: white;
+	}
+
+	.action-btn.primary:hover:not(:disabled) {
+		background: #218838;
+		border-color: #218838;
+		color: white;
+	}
+
+	.action-btn:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+		transform: none;
+	}
+
+	.error {
+		margin: 1rem 0;
+		padding: 1rem;
+		background: #f8d7da;
+		color: #721c24;
+		border: 1px solid #f5c6cb;
+		border-radius: 4px;
 	}
 </style>

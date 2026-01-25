@@ -68,7 +68,6 @@ impl Accounts for AccountsController {
         &self,
         request: Request<LoginRequest>,
     ) -> Result<Response<LoginResponse>, Status> {
-        log::info!("Getting login request");
         let req_data = request.into_inner();
 
         let mut conn = get_conn::<AppError>().await?;
@@ -137,14 +136,14 @@ impl Accounts for AccountsController {
 
     async fn get_account_details(
         &self,
-        request: Request<AccountDetailsRequest>,
+        _request: Request<AccountDetailsRequest>,
     ) -> Result<Response<AccountDetailsResponse>, Status> {
         todo!()
     }
 
     async fn update_account_details(
         &self,
-        request: Request<UpdateAccountDetailsRequest>,
+        _request: Request<UpdateAccountDetailsRequest>,
     ) -> Result<Response<UpdateAccountDetailsResponse>, Status> {
         todo!()
     }

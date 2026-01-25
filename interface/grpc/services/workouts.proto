@@ -1,0 +1,184 @@
+syntax = "proto3";
+package workouts;
+option go_package = "/apis/lightweight/services";
+
+service Workouts {
+  rpc CreateWorkout (CreateWorkoutRequest) returns (CreateWorkoutResponse);
+  rpc GetWorkout (GetWorkoutRequest) returns (GetWorkoutResponse);
+  rpc GetTodaysWorkout (GetTodaysWorkoutRequest) returns (GetTodaysWorkoutResponse);
+  rpc ListWorkouts (ListWorkoutsRequest) returns (ListWorkoutsResponse);
+  rpc DeleteWorkout (DeleteWorkoutRequest) returns (DeleteWorkoutResponse);
+
+  rpc AddExerciseToWorkout (AddExerciseToWorkoutRequest) returns (AddExerciseToWorkoutResponse);
+  rpc RemoveExerciseFromWorkout (RemoveExerciseFromWorkoutRequest) returns (RemoveExerciseFromWorkoutResponse);
+  rpc UpdateWorkoutExercise (UpdateWorkoutExerciseRequest) returns (UpdateWorkoutExerciseResponse);
+
+  rpc CreateSet (CreateSetRequest) returns (CreateSetResponse);
+  rpc UpdateSet (UpdateSetRequest) returns (UpdateSetResponse);
+  rpc DeleteSet (DeleteSetRequest) returns (DeleteSetResponse);
+}
+
+// Workout messages
+message CreateWorkoutRequest {
+  string workout_date = 1; // Format: YYYY-MM-DD
+  string notes = 2;
+}
+
+message CreateWorkoutResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+  int64 workout_id = 4;
+}
+
+message GetWorkoutRequest {
+  int64 workout_id = 1;
+}
+
+message GetWorkoutResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+  Workout workout = 4;
+}
+
+message GetTodaysWorkoutRequest {
+}
+
+message GetTodaysWorkoutResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+  Workout workout = 4;
+  bool has_workout = 5;
+}
+
+message ListWorkoutsRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message ListWorkoutsResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+  repeated WorkoutSummary workouts = 4;
+}
+
+message DeleteWorkoutRequest {
+  int64 workout_id = 1;
+}
+
+message DeleteWorkoutResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+// Workout Exercise messages
+message AddExerciseToWorkoutRequest {
+  int64 workout_id = 1;
+  int64 exercise_id = 2;
+  string notes = 3;
+}
+
+message AddExerciseToWorkoutResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+  int64 workout_exercise_id = 4;
+}
+
+message RemoveExerciseFromWorkoutRequest {
+  int64 workout_exercise_id = 1;
+}
+
+message RemoveExerciseFromWorkoutResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message UpdateWorkoutExerciseRequest {
+  int64 workout_exercise_id = 1;
+  string notes = 2;
+}
+
+message UpdateWorkoutExerciseResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+// Set messages
+message CreateSetRequest {
+  int64 workout_exercise_id = 1;
+  int32 reps = 2;
+  string weight = 3; // Decimal as string
+  string notes = 4;
+}
+
+message CreateSetResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+  int64 set_id = 4;
+}
+
+message UpdateSetRequest {
+  int64 set_id = 1;
+  int32 reps = 2;
+  string weight = 3; // Decimal as string
+  string notes = 4;
+}
+
+message UpdateSetResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+message DeleteSetRequest {
+  int64 set_id = 1;
+}
+
+message DeleteSetResponse {
+  bool success = 1;
+  int32 result_code = 2;
+  string message = 3;
+}
+
+// Data messages
+message Workout {
+  int64 id = 1;
+  string workout_date = 2; // Format: YYYY-MM-DD
+  string notes = 3;
+  repeated WorkoutExercise exercises = 4;
+}
+
+message WorkoutExercise {
+  int64 id = 1;
+  int64 exercise_id = 2;
+  string exercise_name = 3;
+  string category_name = 4;
+  int32 position = 5;
+  string notes = 6;
+  repeated ExerciseSet sets = 7;
+}
+
+message ExerciseSet {
+  int64 id = 1;
+  int32 position = 2;
+  string set_type = 3; // weight, timed, distance
+  int32 reps = 4;
+  string weight = 5; // Decimal as string
+  string notes = 6;
+}
+
+message WorkoutSummary {
+  int64 id = 1;
+  string workout_date = 2; // Format: YYYY-MM-DD
+  string notes = 3;
+  int64 exercise_count = 4;
+  int64 total_sets = 5;
+}

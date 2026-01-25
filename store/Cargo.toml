@@ -9,8 +9,10 @@ edition = "2021"
 cali_core = "0.3.0"
 cali_derive = "0.3.0"
 
+log = "0.4.22"
 tokio = { version = "1.32", features = ["rt-multi-thread", "time", "macros", "signal", "process"] }
 chrono = { version = "0.4", features = ["serde"] }
 async-trait = "0.1"
-sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-native-tls", "mysql", "chrono", "bigdecimal", "macros"] }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-native-tls", "mysql", "chrono", "rust_decimal", "macros"] }
+rust_decimal = { version = "1.33", features = ["db-diesel2-mysql"] }
 thiserror = "1.0"

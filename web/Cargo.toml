@@ -30,6 +30,7 @@ prost = "0.13"
 prost-types = "0.13"
 sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-native-tls", "mysql", "chrono", "bigdecimal", "macros", "migrate"] }
 chrono = "0.4.26"
+rust_decimal = "1.33"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.8"
 serde_derive = "1"
